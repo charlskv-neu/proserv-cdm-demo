@@ -1,0 +1,88 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "GeneralJournal",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "JournalName",
+          "dataType": "string"
+        },
+        {
+          "name": "JournalBatchNumber",
+          "dataType": "string"
+        },
+        {
+          "name": "LineNumber",
+          "dataType": "string"
+        },
+        {
+          "name": "AccountName",
+          "dataType": "string"
+        },
+        {
+          "name": "AccountType",
+          "dataType": "string"
+        },
+        {
+          "name": "CreditAmount",
+          "dataType": "double"
+        },
+        {
+          "name": "DebitAmount",
+          "dataType": "double"
+        },
+        {
+          "name": "Currency",
+          "dataType": "string"
+        },
+        {
+          "name": "ExchangeRate",
+          "dataType": "double"
+        },
+        {
+          "name": "Description",
+          "dataType": "string"
+        },
+        {
+          "name": "Invoice",
+          "dataType": "string"
+        },
+        {
+          "name": "IsPosted",
+          "dataType": "string"
+        },
+        {
+          "name": "PostedDate",
+          "dataType": "date"
+        },
+        {
+          "name": "PostingLayer",
+          "dataType": "string"
+        },
+        {
+          "name": "OffsetAccountName",
+          "dataType": "string"
+        },
+        {
+          "name": "OffsetAccountType",
+          "dataType": "string"
+        },
+        {
+          "name": "PaymentMethod",
+          "dataType": "string"
+        },
+        {
+          "name": "PaymentDate",
+          "dataType": "date"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+parameters:
+- name: 'PoolImage'
+  default: 'windows-2019'
+  type: string
+- name: 'BuildJobDisplayName'
+  default: 'Build Job'
+  type: string
+
+
+
+
+jobs:
+- job: Build
+  displayName: '${{parameters.BuildJobDisplayName}}'
+  pool:
+    vmImage: ${{parameters.PoolImage}}
+
+  steps:
+  - checkout: self
+
+  - task: CopyFiles@2
+    displayName: 'Copy Infra Files'
+    inputs:
+      SourceFolder: '$(build.SourcesDirectory)/proserv-cdm-demo-infra-code/infra'
+      Contents: '**'
+      TargetFolder: '$(build.artifactstagingdirectory)/ARM'
+      
+  - task: CopyFiles@2
+    displayName: 'Copy Synapse Template Files'
+    inputs:
+      SourceFolder: '$(build.SourcesDirectory)/proserv-cdm-demo-infra-code/WorkspaceTemplates'
+      Contents: '**'
+      TargetFolder: '$(build.artifactstagingdirectory)/WorkspaceTemplates'
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'

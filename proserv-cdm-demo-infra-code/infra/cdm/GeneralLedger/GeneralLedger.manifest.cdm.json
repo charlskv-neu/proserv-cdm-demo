@@ -1,0 +1,15 @@
+{
+  "$schema": "CdmManifest.cdm.json",
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [],
+  "manifestName": "GeneralLedger",
+  "explanation": "CDM standard entities",
+  "entities": [
+    {
+      "type": "LocalEntity",
+      "entityName": "GeneralJournal",
+      "entityPath": "GeneralJournal.cdm.json/GeneralJournal"
+    }
+  ]
+}
+

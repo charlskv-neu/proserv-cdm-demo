@@ -1,0 +1,250 @@
+{
+    "jsonSchemaSemanticVersion": "0.9.0",        
+    "imports": [
+		{
+			"corpusPath": "/foundations.cdm.json"
+		}	
+    ],
+    "definitions": [
+        {
+            "attributeGroupName": "DepreciationRate",
+            "members": [
+                {
+                    "name": "DepreciationRate",
+                    "dataType": "double",
+                    "description": "Depreciation rate (e.g. percentage)."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetDepreciableBasis",
+            "members": [
+                {
+                    "name": "FixedAssetDepreciableBasis",
+                    "dataType": "double",
+                    "description": "Depreciable basis of the fixed asset."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetFairValue",
+            "members": [
+                {
+                    "name": "FixedAssetFairValue",
+                    "dataType": "double",
+                    "description": "Fair value of the fixed asset."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetRealizedGainLossAccount",
+            "members": [
+                {
+                    "name": "FixedAssetRealizedGainLossAccount",
+                    "dataType": "string",
+                    "description": "GL account number on which Income Statement amount is recognized for realized gain/loss."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetRealizedGainLossAmount",
+            "members": [
+                {
+                    "name": "FixedAssetRealizedGainLossAmount",
+                    "dataType": "double",
+                    "description": "Realised gain or loss on revaluation"
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetReplacementCost",
+            "members": [
+                {
+                    "name": "FixedAssetReplacementCost",
+                    "dataType": "double",
+                    "description": "Replacement cost of the fixed asset."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetUnrealizedGainLossAccount",
+            "members": [
+                {
+                    "name": "FixedAssetUnrealizedGainLossAccount",
+                    "dataType": "string",
+                    "description": "GL account number on which Balance Sheet amount is recorded for unrealized gain/loss."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "FixedAssetUnrealizedGainLossAmount",
+            "members": [
+                {
+                    "name": "FixedAssetUnrealizedGainLossAmount",
+                    "dataType": "double",
+                    "description": "Amount of unrealized gain/(loss) recorded on the Balance Sheet for the fixed asset removal."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "GL Account",
+            "members": [
+                {
+                    "name": "GL Account",
+                    "dataType": "string",
+                    "description": "GL Account for the depreciation posting."
+                }
+            ]
+        },		
+        {
+            "attributeGroupName": "LotNumber",
+            "members": [
+                {
+                    "name": "LotNumber",
+                    "dataType": "boolean",
+                    "description": "Tracked by lot number. True or false."
+                }
+            ]
+        },		
+        {
+            "attributeGroupName": "PurchaseOrderID",
+            "members": [
+                {
+                    "name": "PurchaseOrderID",
+                    "dataType": "string",
+                    "description": "Purchase order ID of the addition"
+                }
+            ]
+        },	
+        {
+            "attributeGroupName": "SupplierID",
+            "members": [
+                {
+                    "name": "SupplierID",
+                    "dataType": "string",
+                    "description": "Supplier ID"
+                }
+            ]
+        },	
+        {
+            "attributeGroupName": "SupplierName",
+            "members": [
+                {
+                    "name": "SupplierName",
+                    "dataType": "string",
+                    "description": "Name of the supplier"
+                }
+            ]
+        },			
+        {
+            "attributeGroupName": "TaxCode",
+            "members": [
+                {
+                    "name": "TaxCode",
+                    "dataType": "string",
+                    "description": "Tax code for the sale"
+                }
+            ]
+        },	
+        {
+            "attributeGroupName": "UniqueID",
+            "members": [
+                {
+                    "name": "UniqueID",
+                    "dataType": "string",
+                    "description": "Unique identifier for the removal entry."
+                }
+            ]
+        },	
+        {
+            "attributeGroupName": "GL TransactionID",
+            "members": [
+                {
+                    "name": "GL TransactionID",
+                    "dataType": "string",
+                    "description": "Transaction ID in GL."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "approval",
+            "members": [
+                {
+                    "name": "ApprovedBy",
+                    "dataType": "string",
+                    "description": "User_ID (from User_Listing file (for person who approved the entry)."
+                },
+                {
+                    "name": "ApprovedByDate",
+                    "dataType": "date",
+                    "description": "The date the entry was approved."
+                },
+                {
+                    "name": "ApprovedByTime",
+                    "dataType": "time",
+                    "description": "The time this transaction was entered into the system. ISO 8601 representing time in 24- hour time (hhmm) (for example, 1:00 PM = 1300)."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "enter",
+            "members": [
+                {
+                    "name": "EnteredBy",
+                    "dataType": "string",
+                    "description": "User_ID (User_Listing file) for person who created the record."
+                },
+                {
+                    "name": "EnteredDate",
+                    "dataType": "date",
+                    "description": "The date the transaction was entered into the system. This is sometimes referred to as the creation date. This should be a system-generated date (rather than user-entered date), when possible. This date does not necessarily correspond with the date of the transaction itself."
+                },
+                {
+                    "name": "EnteredTime",
+                    "dataType": "time",
+                    "description": "The time this transaction was entered into the system. ISO 8601 representing time in 24- hour time (hhmm) (for example, 1:00 PM = 1300)."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "lastmodify",
+            "members": [
+                {
+                    "name": "LastModifiedBy",
+                    "dataType": "string",
+                    "description": "User_ID (from User_Listing file (for person who approved the entry)."
+                },
+                {
+                    "name": "LastModifiedDate",
+                    "dataType": "date",
+                    "description": "The date the entry was last modified."
+                },
+                {
+                    "name": "LastModifiedTime",
+                    "dataType": "time",
+                    "description": "The time the last entry was modified. ISO 8601 representing time in 24-hour time (hhmm) (for example, 1:00 PM = 1300)."
+                }
+            ]
+        },
+        {
+            "attributeGroupName": "general",
+            "members": [
+                {
+                    "name": "BusinessUnitCode",
+                    "dataType": "string",
+                    "description": "Used to identify the business unit, region, branch, and so on at the level that financial statements are being audited. Must match a Business_Unit_Code in the Business_Unit_Listing file."
+                },
+                {
+                    "name": "FixedAssetID",
+                    "dataType": "string",
+                    "description": "Unique identifier; may require a concatenation, such as Business_Unit_Code + Fixed_Asset_Code."
+                },
+                {
+                    "name": "SerialNumber",
+                    "dataType": "boolean",
+                    "description": "Tracked by serial number. True or false."
+                }
+            ]
+        }
+    ]
+}

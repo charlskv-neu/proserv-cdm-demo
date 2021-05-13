@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SQLMetaData/SQLMetaData/obj/Debug
+/SQLMetaData/SQLMetaData/.vs/Framework/v15
+/.vs
+/SQLMetaData/SQLMetaData/Framework.jfm
+/SQLMetaData/SQLMetaData/Framework.dbmdl
+/SQLMetaData/SQLMetaData/bin/Debug
