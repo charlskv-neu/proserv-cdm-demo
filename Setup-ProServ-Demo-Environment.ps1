@@ -68,9 +68,8 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
         Write-Host "Overriding parameters"        
         $parameterObject = @{}; 
         $parametersFromFile.parameters | Get-Member -MemberType *Property | % {
-        $parameterObject.($_.name) = $parametersFromFile.parameters.($_.name).value; }
-        foreach($parameterName in $overridenParameters.Keys)
-        {          
+            $parameterObject.($_.name) = $parametersFromFile.parameters.($_.name).value; }
+        foreach ($parameterName in $overridenParameters.Keys) {          
             $parameterValue = $overridenParameters.$parameterName            
             $parameterObject["$parameterName"] = $parameterValue     
         }        
@@ -78,6 +77,71 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
         New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -Mode Incremental -TemplateFile $templateFilePath -TemplateParameterObject $parameterObject 
         Write-Host "Deployment '$deploymentName' completed"        
     }    
+}
+
+Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitionFilePath) {
+    try {
+        if (!(Test-Path $definitionFilePath)) {        
+            Write-Host "Linked service definition file does not exist at path '$definitionFilePath'"
+        }  
+        else {       
+            Set-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -DefinitionFile $definitionFilePath        
+            Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'"        
+        }
+    }
+    catch {
+        Write-Host "An error occurred:"
+        Write-Host $_
+    }
+     
+}
+
+Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
+    try {
+        if (!(Test-Path $definitionFilePath)) {        
+            Write-Host "Dataset definition file does not exist at path '$definitionFilePath'"
+        }  
+        else {       
+            Set-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -DefinitionFile $definitionFilePath        
+            Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'"        
+        }   
+    }
+    catch {
+        Write-Host "An error occurred:"
+        Write-Host $_
+    }     
+}
+
+Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath) {
+    try {
+        if (!(Test-Path $definitionFilePath)) {        
+            Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'"
+        }  
+        else {       
+            Set-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -DefinitionFile $definitionFilePath        
+            Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'"        
+        }
+    }
+    catch {
+        Write-Host "An error occurred:"
+        Write-Host $_
+    }        
+}
+
+Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath) {
+    try {
+        if (!(Test-Path $definitionFilePath)) {        
+            Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'"
+        }  
+        else {       
+            Set-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -DefinitionFile $definitionFilePath        
+            Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'"        
+        }
+    }
+    catch {
+        Write-Host "An error occurred:"
+        Write-Host $_
+    }        
 }
 
 ##############################################################################
@@ -112,16 +176,16 @@ $loggedInUserId = $loggedInUserAccount.Id
 $loggedInUserObjectId = $loggedInUserAccount.ExtendedProperties.HomeAccountId.Split('.')[0]
 
 $overridenParameters = @{
-    name = $SynapseWorkspaceName
-    location = $location
-    defaultDataLakeStorageAccountName = $SyanpseDefaultADLSName
+    name                                 = $SynapseWorkspaceName
+    location                             = $location
+    defaultDataLakeStorageAccountName    = $SyanpseDefaultADLSName
     defaultDataLakeStorageFilesystemName = $defaultDataLakeStorageFilesystemName
-    storageSubscriptionID = $SubscriptionId
-    storageResourceGroupName = $ResourceGroupName
-    storageLocation = $location
-    sqlActiveDirectoryAdminName = $loggedInUserId
-    sqlActiveDirectoryAdminObjectId = $loggedInUserObjectId
-    userObjectId = $loggedInUserObjectId    
+    storageSubscriptionID                = $SubscriptionId
+    storageResourceGroupName             = $ResourceGroupName
+    storageLocation                      = $location
+    sqlActiveDirectoryAdminName          = $loggedInUserId
+    sqlActiveDirectoryAdminObjectId      = $loggedInUserObjectId
+    userObjectId                         = $loggedInUserObjectId    
 }
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
 
@@ -133,4 +197,26 @@ $args += ("–SyanpseDefaultADLSName", "$SyanpseDefaultADLSName")
 $args += ("-SyanpseDefaultADLSFileSystemName", "$defaultDataLakeStorageFilesystemName")
 $args += ("-DataSourcePath", "./proserv-cdm-demo-infra-code/infra")
 Invoke-Expression "$command $args"
+
+## Deploy Azure Synapse Artifacts
+$artifactsBasePath = "./proserv-cdm-demo-infra-code/WorkspaceTemplates/"
+
+$linkedServiceName = "adls_cdm"
+$definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json"
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath
+$linkedServiceName = "AzureDataLakeStorageDemo"
+$definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDemo.json"
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath
+
+$dataSetName = "DynamicsGeneralJournalExcel"
+$definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json"
+New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath
+
+$dataFlowName = "DynamicsGL_CDM"
+$definitionFilePath = $artifactsBasePath + "dataflow/DynamicsGL_CDM.json"
+New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath
+
+$pipelineName = "GeneralLedger_CDM"
+$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json"
+New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath
 
