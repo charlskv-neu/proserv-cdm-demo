@@ -28,11 +28,11 @@ param(
     [string]
     $ResourceGroupName,
 
-    [Parameter(Mandatory = $False)]
+    [Parameter(Mandatory = $True)]
     [string]
     $SynapseWorkspaceName,
 
-    [Parameter(Mandatory = $False)]
+    [Parameter(Mandatory = $True)]
     [string]
     $SyanpseDefaultADLSName
 )
@@ -190,33 +190,27 @@ $overridenParameters = @{
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
 
 ## Add folders in ADLS
-$command = "./proserv-cdm-demo-infra-code/infra/Scripts/AddContainersInStorageAccount.ps1"
-$args = @()
-$args += ("-ResourceGroupName", "$ResourceGroupName")
-$args += ("–SyanpseDefaultADLSName", "$SyanpseDefaultADLSName")
-$args += ("-SyanpseDefaultADLSFileSystemName", "$defaultDataLakeStorageFilesystemName")
-$args += ("-DataSourcePath", "./proserv-cdm-demo-infra-code/infra")
-Invoke-Expression "$command $args"
+.\proserv-cdm-demo-infra-code\infra\Scripts\AddContainersInStorageAccount.ps1 -ResourceGroupName $ResourceGroupName –SyanpseDefaultADLSName $SyanpseDefaultADLSName -SyanpseDefaultADLSFileSystemName $defaultDataLakeStorageFilesystemName -DataSourcePath "./proserv-cdm-demo-infra-code/infra"
 
 ## Deploy Azure Synapse Artifacts
-$artifactsBasePath = "./proserv-cdm-demo-infra-code/WorkspaceTemplates/"
+$artifactsBasePath = "./proserv-cdm-demo-infra-code/WorkspaceTemplates/";
 
-$linkedServiceName = "adls_cdm"
-$definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json"
-New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath
-$linkedServiceName = "AzureDataLakeStorageDemo"
-$definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDemo.json"
-New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath
+$linkedServiceName = "adls_cdm";
+$definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json";
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
 
-$dataSetName = "DynamicsGeneralJournalExcel"
-$definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json"
-New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath
+$linkedServiceName = "AzureDataLakeStorageDemo";
+$definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDemo.json";
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
 
-$dataFlowName = "DynamicsGL_CDM"
-$definitionFilePath = $artifactsBasePath + "dataflow/DynamicsGL_CDM.json"
-New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath
+$dataSetName = "DynamicsGeneralJournalExcel";
+$definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
+New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
 
-$pipelineName = "GeneralLedger_CDM"
-$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json"
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath
+$dataFlowName = "DynamicsGL_CDM";
+$definitionFilePath = $artifactsBasePath + "dataflow/DynamicsGL_CDM.json";
+New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
+<#$pipelineName = "GeneralLedger_CDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json";
+New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;#>
