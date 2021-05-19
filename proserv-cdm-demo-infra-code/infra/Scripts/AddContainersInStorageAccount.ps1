@@ -22,7 +22,7 @@ Function Create-StorageContainer($containerName, $ctx)
     else  
     { 
         New-AzStorageContainer -Name $containerName -Context $ctx -Permission off
-        Write-Host "Created container " + $containerName
+        Write-Host "Created container "$containerName
     }
 }
 
@@ -35,7 +35,7 @@ Function Create-FolderInContainer($containerName, $ctx, $folderName)
     else  
     {              
         New-AzDataLakeGen2Item -Context $ctx -FileSystem $containerName -Path $folderName -Directory
-        Write-Host "Created folder " + $folderName
+        Write-Host "Created folder "$folderName
     }
 }
 
@@ -49,7 +49,7 @@ Function Create-FileInFolder($containerName, $ctx, $folderName, $fileName, $file
     else  
     {              
         New-AzDataLakeGen2Item -Context $ctx -FileSystem $containerName -Path $finalPath -Source $filePath -Force
-        Write-Host "Created file " + $fileName + " inside " + $folderName
+        Write-Host "Created file "$fileName" inside "$folderName
     }
 }
 

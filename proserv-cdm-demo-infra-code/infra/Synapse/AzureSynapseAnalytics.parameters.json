@@ -3,22 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "dummysynapse"
+            "value": ""
         },
         "location": {
-            "value": "eastus"
+            "value": ""
         },
         "defaultDataLakeStorageAccountName": {
-            "value": "dummystoragefs"
+            "value": ""
         },
         "defaultDataLakeStorageFilesystemName": {
-            "value": "dummyfilesystem"
+            "value": ""
         },
         "sqlAdministratorLogin": {
-            "value": "sqladminuser"
+            "value": ""
         },
         "sqlAdministratorLoginPassword": {
-            "value": "Complex#27092020"
+            "value": ""
         },
         "setWorkspaceIdentityRbacOnStorageAccount": {
             "value": true
@@ -32,21 +32,14 @@
         "managedVirtualNetwork": {
             "value": ""
         },
-        "tagValues": {
-            "value": {
-                "BillTo": "CKV",
-                "Dept": "Analytics",
-                "Email": "mijo.joseph@neudesic.com"
-            }
-        },
         "storageSubscriptionID": {
-            "value": "9911c2e3-65d7-49ef-91da-ab2c1dd21e14"
+            "value": ""
         },
         "storageResourceGroupName": {
-            "value": "learn-synapse"
+            "value": ""
         },
         "storageLocation": {
-            "value": "eastus"
+            "value": ""
         },
         "storageRoleUniqueId": {
             "value": ""
@@ -79,10 +72,10 @@
             "value": ""
         },
 		"sqlActiveDirectoryAdminName": {
-            "value": "Azure-Synapse-Contributor"
+            "value": ""
         },
 		"sqlActiveDirectoryAdminObjectId": {
-            "value": "4a8d5cf6-6c94-44c3-9aa6-6a4561581dc4"
+            "value": ""
         },
         "setSbdcRbacOnStorageAccount": {
             "value": false
