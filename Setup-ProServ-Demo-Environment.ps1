@@ -163,11 +163,9 @@ if (!(Get-InstalledModule -Name Az.Synapse)) {
     Import-Module Az.Synapse
 }
 
-## Login to Azure Account.
-Connect-AzAccount
-## Select the subscription you will be operating on.
-if ($TenantId) {
-    Select-AzSubscription -Subscription $SubscriptionId -TenantId $TenantId
+## Login to Azure Account with the subscription you will be operating on.
+if ($TenantId -And $SubscriptionId) {
+    Connect-AzAccount -SubscriptionId $SubscriptionId -TenantId $TenantId
 }
 else {
     Write-Output "Unable to select the subscription. Please provide the tenant Id and subscription you're connecting to."
