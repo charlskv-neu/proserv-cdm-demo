@@ -78,7 +78,7 @@
             "value": ""
         },
         "setSbdcRbacOnStorageAccount": {
-            "value": false
+            "value": true
         }
     }
 }
