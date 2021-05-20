@@ -49,7 +49,7 @@
 	- Navigate to Dataflow artifacts under Develop menu in Synapse Studio and click on "DynamicsGL_CDM".
 	- Once opened, click the code icon ({}) on the top right and replace it with json from [DynamicsGL_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/dataflow/DynamicsGL_CDM.json)
 		![Replace Dataflow Code](images/ps-dply-3.png)
-	- Repeat above steps for below dataflow and pipelines with its appropriate template as mentioned below
+	- Repeat above steps for remaining dataflow and pipelines with its appropriate template as mentioned below
 		- Dataflow (NYTaxiDF_CDM) - Replace it with json from [NYTaxiDF_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/dataflow/NYTaxiDF_CDM.JSON)
 		- Pipeline (GeneralLedger_CDM) - Replace it with json from [GeneralLedger_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/pipeline/GeneralLedger_CDM.json)
 		- Pipeline (NYTaxiPL_CDM) - Replace it with json from [NYTaxiPL_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/pipeline/NYTaxiPL_CDM.JSON)
