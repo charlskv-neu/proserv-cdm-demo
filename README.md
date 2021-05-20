@@ -20,7 +20,7 @@
 |SyanpseDefaultADLSName | Default ADLS Storage account name to be linked with Synapse. | A globally unique name with only lowercase letters and numbers. Name must be between 3 and 24 characters.
 
 
-2. Download the code zip file from https://github.com/charlskv-neu/proserv-cdm-demo/tree/development , and extract its contents to the location of your choice.
+2. Download the code zip file from https://github.com/charlskv-neu/proserv-cdm-demo/tree/feature/oneclick , and extract its contents to the location of your choice.
 
 3. On your computer, enter PowerShell in the search box on the Windows taskbar. In the search list, right-click Windows PowerShell, and then select Run as administrator.
 
