@@ -5,7 +5,7 @@
         "annotations": [],
         "type": "AzureBlobFS",
         "typeProperties": {
-            "url": "https://dummyadls.dfs.core.windows.net"
+            "url": "<AzureDataLakeStorageDemo_url>"
         },
         "connectVia": {
             "referenceName": "AutoResolveIntegrationRuntime",

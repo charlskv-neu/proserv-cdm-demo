@@ -85,7 +85,7 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
             Write-Host "Linked service definition file does not exist at path '$definitionFilePath'"
         }  
         else {       
-            Set-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -DefinitionFile $definitionFilePath        
+            Set-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -DefinitionFile $definitionFilePath -ErrorAction Stop
             Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'"        
         }
     }
@@ -102,7 +102,7 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
             Write-Host "Dataset definition file does not exist at path '$definitionFilePath'"
         }  
         else {       
-            Set-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -DefinitionFile $definitionFilePath        
+            Set-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -DefinitionFile $definitionFilePath -ErrorAction Stop     
             Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'"        
         }   
     }
@@ -118,7 +118,7 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
             Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'"
         }  
         else {       
-            Set-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -DefinitionFile $definitionFilePath        
+            Set-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -DefinitionFile $definitionFilePath -ErrorAction Stop
             Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'"        
         }
     }
@@ -134,7 +134,7 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
             Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'"
         }  
         else {       
-            Set-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -DefinitionFile $definitionFilePath        
+            Set-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -DefinitionFile $definitionFilePath -ErrorAction Stop
             Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'"        
         }
     }
@@ -149,6 +149,19 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 ## Entry Method. Execution begins here.
 ##
 ##############################################################################
+
+## Setting up the development environment
+if (!(Get-InstalledModule -Name Az)) {
+    Write-Host "Installing Az module in the system"
+    Install-Module -Name Az -AllowClobber -Scope CurrentUser
+    Import-Module Az
+}
+
+if (!(Get-InstalledModule -Name Az.Synapse)) {
+    Write-Host "Installing Az.Synapse module in the system"
+    Install-Module -Name Az.Synapse -AllowClobber -Scope CurrentUser
+    Import-Module Az.Synapse
+}
 
 ## Login to Azure Account.
 Connect-AzAccount
@@ -197,11 +210,15 @@ $artifactsBasePath = "./proserv-cdm-demo-infra-code/WorkspaceTemplates/";
 
 $linkedServiceName = "adls_cdm";
 $definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<adls_cdm_url>" -ParameterValue "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<adls_cdm_url>" -ParameterName "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 
 $linkedServiceName = "AzureDataLakeStorageDemo";
 $definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDemo.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<AzureDataLakeStorageDemo_url>" -ParameterValue "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<AzureDataLakeStorageDemo_url>" -ParameterName "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 
 $dataSetName = "DynamicsGeneralJournalExcel";
 $definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
