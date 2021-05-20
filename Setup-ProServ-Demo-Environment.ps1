@@ -151,17 +151,15 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 ##############################################################################
 
 ## Setting up the development environment
-if (!(Get-InstalledModule -Name Az)) {
-    Write-Host "Installing Az module in the system"
-    Install-Module -Name Az -AllowClobber -Scope CurrentUser
-    Import-Module Az
-}
+$stopwatch = [System.Diagnostics.Stopwatch]::new()
+$Stopwatch.Start()
+Write-Host "Installing Az module in the system"
+Install-Module -Name Az -AllowClobber -Scope CurrentUser
+Import-Module Az
 
-if (!(Get-InstalledModule -Name Az.Synapse)) {
-    Write-Host "Installing Az.Synapse module in the system"
-    Install-Module -Name Az.Synapse -AllowClobber -Scope CurrentUser
-    Import-Module Az.Synapse
-}
+Write-Host "Installing Az.Synapse module in the system"
+Install-Module -Name Az.Synapse -AllowClobber -Scope CurrentUser
+Import-Module Az.Synapse
 
 ## Login to Azure Account with the subscription you will be operating on.
 if ($TenantId -And $SubscriptionId) {
@@ -245,3 +243,6 @@ $definitionFilePath = $artifactsBasePath + "pipeline/DummyPipeline.json";
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<pipeline_name>" -ParameterValue $pipelineName
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<pipeline_name>" -ParameterName $pipelineName
+
+$Stopwatch.Stop()
+Write-Host "Total Execution Time : "$Stopwatch.Elapsed
