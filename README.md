@@ -28,7 +28,7 @@
 
 4. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-setup-script with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
 
-	cd <path-to-setup-kit>
+	cd "path-to-setup-kit"
 
 5. Use the following command to run the setup kit. 
 
@@ -37,5 +37,7 @@
 	- When the powershell IDE prompts to supply values for the script arguments enter the values collected in step 1 one at a time.
 	
 	- If you see the warning prompt, Untrusted repository, enter A, and then press Enter.
+	
+	![Powershell Commands](images/ps-dply-2.PNG)
 
 ***
