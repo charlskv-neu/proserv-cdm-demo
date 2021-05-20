@@ -6,7 +6,7 @@
  - User must have owner access to the resource group
  
 
-## Deployment Steps
+## Collect data needed to run the scripts
 
 1. Before you get started, copy and paste below variables in a text editor for later use.:
 
@@ -19,24 +19,26 @@
 |SynapseWorkspaceName |	Synapse workspace name | A globally unique name with at most 50 characters long, must contain only lower-case letters, digits and hyphens but can not start or end with '-', and must not contain the string '-ondemand' anywhere in the name.
 |SyanpseDefaultADLSName | Default ADLS Storage account name to be linked with Synapse. | A globally unique name with only lowercase letters and numbers. Name must be between 3 and 24 characters.
 
+## Prepare starter kit and run the client-side setup scripts
 
-2. Download the code zip file from https://github.com/charlskv-neu/proserv-cdm-demo/tree/feature/oneclick , and extract its contents to the location of your choice.
+1. [Download the starter kit](https://github.com/charlskv-neu/proserv-cdm-demo/tree/feature/oneclick) , and extract its contents to the location of your choice.
 
-3. On your computer, enter PowerShell in the search box on the Windows taskbar. In the search list, right-click Windows PowerShell, and then select Run as administrator.
+2. On your computer, enter **PowerShell** in the search box on the Windows taskbar. In the search list, right-click **Windows PowerShell**, and then select **Run as administrator**.
 
-	![Run Powershell](images/ps-dply-1.PNG)
 
-4. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-setup-script with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
+3. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-setup-script with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
 
 	cd "path-to-setup-kit"
 
-5. Use the following command to run the setup kit. 
+4. Use the following command to run the setup kit. 
 
 	- .\Setup-ProServ-Demo-Environment.ps1
 	
-	- When the powershell IDE prompts to supply values for the script arguments enter the values collected in step 1 one at a time.
+	- When the powershell IDE prompts to supply values for the script arguments enter the values you previously collected one by one.
 	
 	- If you see the warning prompt, Untrusted repository, enter A, and then press Enter.
+	
+	- Complete the Azure login when prompted
 	
 	![Powershell Commands](images/ps-dply-2.PNG)
 
