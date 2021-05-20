@@ -222,10 +222,26 @@ $dataSetName = "DynamicsGeneralJournalExcel";
 $definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
 New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
 
+$dataSetName = "TaxiDataParquet";
+$definitionFilePath = $artifactsBasePath + "dataset/TaxiDataParquet.json";
+New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
+
 $dataFlowName = "DynamicsGL_CDM";
 $definitionFilePath = $artifactsBasePath + "dataflow/DynamicsGL_CDM.json";
 New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
-<#$pipelineName = "GeneralLedger_CDM";
-$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;#>
+$dataFlowName = "NYTaxiDF_CDM";
+$definitionFilePath = $artifactsBasePath + "dataflow/NYTaxiDF_CDM.json";
+New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
+
+$pipelineName = "GeneralLedger_CDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/DummyPipeline.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<pipeline_name>" -ParameterValue $pipelineName
+New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<pipeline_name>" -ParameterName $pipelineName
+
+$pipelineName = "NYTaxiPL_CDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/DummyPipeline.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<pipeline_name>" -ParameterValue $pipelineName
+New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<pipeline_name>" -ParameterName $pipelineName
