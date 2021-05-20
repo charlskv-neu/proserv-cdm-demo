@@ -1,0 +1,189 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "nyctaxidata",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "vendor_id",
+          "purpose": "identifiedBy",
+          "dataType": "string",
+          "displayName": "vendor_id",
+          "description": ""
+        },
+        {
+          "name": "pickup_datetime",
+          "purpose": "identifiedBy",
+          "dataType": "string",
+          "displayName": "pickup_datetime",
+          "description": ""
+        },
+        {
+          "name": "dropoff_datetime",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "dropoff_datetime",
+          "description": ""
+        },
+        {
+          "name": "store_and_foreward",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "store_and_foreward",
+          "description": ""
+        },
+        {
+          "name": "rate_code_id",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.small"
+            }
+          ],
+          "isNullable": true,
+          "displayName": "rate_code_id",
+          "description": ""
+        },
+        {
+          "name": "pickup_longitude",
+          "purpose": "identifiedBy",
+          "dataType": "double",
+          "displayName": "pickup_longitude",
+          "description": ""
+        },
+        {
+          "name": "pickup_latitude",
+          "purpose": "identifiedBy",
+          "dataType": "double",
+          "displayName": "pickup_latitude",
+          "description": ""
+        },
+        {
+          "name": "dropoff_longitude",
+          "purpose": "hasA",
+          "dataType": "double",
+          "isNullable": true,
+          "displayName": "dropoff_longitude",
+          "description": ""
+        },
+        {
+          "name": "dropoff_latitude",
+          "purpose": "hasA",
+          "dataType": "double",
+          "isNullable": true,
+          "displayName": "dropoff_latitude",
+          "description": ""
+        },
+        {
+          "name": "passenger_count",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.small"
+            }
+          ],
+          "isNullable": true,
+          "displayName": "passenger_count",
+          "description": ""
+        },
+        {
+          "name": "trip_distance",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "trip_distance",
+          "description": ""
+        },
+        {
+          "name": "fare_amount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "fare_amount",
+          "description": ""
+        },
+        {
+          "name": "extra",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "extra",
+          "description": ""
+        },
+        {
+          "name": "mta_tax",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "mta_tax",
+          "description": ""
+        },
+        {
+          "name": "tip_amount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "tip_amount",
+          "description": ""
+        },
+        {
+          "name": "tolls_amount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "tolls_amount",
+          "description": ""
+        },
+        {
+          "name": "ehail_fee",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "ehail_fee",
+          "description": ""
+        },
+        {
+          "name": "total_amount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "isNullable": true,
+          "displayName": "total_amount",
+          "description": ""
+        },
+        {
+          "name": "payment_type",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.small"
+            }
+          ],
+          "isNullable": true,
+          "displayName": "payment_type",
+          "description": ""
+        },
+        {
+          "name": "trip_type",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "trip_type",
+          "description": ""
+        }
+      ],
+      "displayName": "nyctaxidata",
+      "description": ""
+    }
+  ]
+}

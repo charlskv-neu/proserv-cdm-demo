@@ -75,3 +75,13 @@ $filePath = $DataSourcePath + "\cdm\GeneralLedger\" + $fileName
 Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
 $folderName = "data/"
 Create-FolderInContainer $containerName $ctx $folderName
+$folderName = "taxidata/cdm-model/"
+Create-FolderInContainer $containerName $ctx $folderName
+$fileName = "nyctaxidata.cdm.json"
+$filePath = $DataSourcePath + "\cdm\TaxiData\" + $fileName
+Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+$folderName = "taxidata/output_data/"
+Create-FolderInContainer $containerName $ctx $folderName
+
+$containerName = "cdmtaxidata"
+Create-StorageContainer $containerName $ctx
