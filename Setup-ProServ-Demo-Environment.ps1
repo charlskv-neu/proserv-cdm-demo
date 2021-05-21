@@ -47,7 +47,7 @@ Function Set-ResourceGroup($resourceGroupName, $location) {
         Write-Host "Resource group '$resourceGroupName' does not exist. Creating new resource group";
         
         Write-Host "Creating resource group '$resourceGroupName' in location '$location'";
-        New-AzResourceGroup -Name $resourceGroupName -Location $location
+        New-AzResourceGroup -Name $resourceGroupName -Location $location -ErrorAction Stop
     }
     else {
         Write-Host "Using existing resource group '$resourceGroupName'";
@@ -74,7 +74,7 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
             $parameterObject["$parameterName"] = $parameterValue     
         }        
         Write-Host "Starting deployment '$deploymentName'"        
-        New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -Mode Incremental -TemplateFile $templateFilePath -TemplateParameterObject $parameterObject 
+        New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -Mode Incremental -TemplateFile $templateFilePath -TemplateParameterObject $parameterObject -ErrorAction Stop 
         Write-Host "Deployment '$deploymentName' completed"        
     }    
 }
