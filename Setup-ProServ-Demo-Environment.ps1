@@ -84,9 +84,17 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
         if (!(Test-Path $definitionFilePath)) {        
             Write-Host "Linked service definition file does not exist at path '$definitionFilePath'"
         }  
-        else {       
-            Set-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -DefinitionFile $definitionFilePath -ErrorAction Stop
-            Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'"        
+        else {
+            $linkedService = Get-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -ErrorAction SilentlyContinue
+            if (!$linkedService) {
+                az synapse linked-service create --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath
+                Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'"
+            }
+            else {
+                az synapse linked-service set --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath
+                Write-Host "Updated linked service '$linkedServiceName' in synapse workspace '$workspaceName'"
+            }
+                    
         }
     }
     catch {
@@ -101,9 +109,17 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
         if (!(Test-Path $definitionFilePath)) {        
             Write-Host "Dataset definition file does not exist at path '$definitionFilePath'"
         }  
-        else {       
-            Set-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -DefinitionFile $definitionFilePath -ErrorAction Stop     
-            Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'"        
+        else {
+            $dataSet = Get-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -ErrorAction SilentlyContinue
+            if(!$dataSet){
+                az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath    
+                Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'"
+            }
+            else {
+                az synapse dataset set --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath    
+                Write-Host "Updated dataset '$dataSetName' in synapse workspace '$workspaceName'"
+            }
+                    
         }   
     }
     catch {
@@ -117,9 +133,16 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
         if (!(Test-Path $definitionFilePath)) {        
             Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'"
         }  
-        else {       
-            Set-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -DefinitionFile $definitionFilePath -ErrorAction Stop
-            Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'"        
+        else {
+            $dataFlow = Get-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -ErrorAction SilentlyContinue
+            if(!$dataFlow){
+                az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath         
+                Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'"
+            }
+            else{
+                az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath         
+                Write-Host "Updated dataflow '$dataFlowName' in synapse workspace '$workspaceName'"
+            }                    
         }
     }
     catch {
@@ -133,9 +156,16 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
         if (!(Test-Path $definitionFilePath)) {        
             Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'"
         }  
-        else {       
-            Set-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -DefinitionFile $definitionFilePath -ErrorAction Stop
-            Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'"        
+        else {
+            $pipeline = Get-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -ErrorAction SilentlyContinue
+            if(!$pipeline){
+                az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath
+                Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'"
+            }
+            else {
+                az synapse pipeline set --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath
+                Write-Host "Updated pipeline '$pipelineName' in synapse workspace '$workspaceName'"
+            }                    
         }
     }
     catch {
@@ -233,16 +263,12 @@ $definitionFilePath = $artifactsBasePath + "dataflow/NYTaxiDF_CDM.json";
 New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
 $pipelineName = "GeneralLedger_CDM";
-$definitionFilePath = $artifactsBasePath + "pipeline/DummyPipeline.json";
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<pipeline_name>" -ParameterValue $pipelineName
+$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<pipeline_name>" -ParameterName $pipelineName
 
 $pipelineName = "NYTaxiPL_CDM";
-$definitionFilePath = $artifactsBasePath + "pipeline/DummyPipeline.json";
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<pipeline_name>" -ParameterValue $pipelineName
+$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiPL_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<pipeline_name>" -ParameterName $pipelineName
 
 $Stopwatch.Stop()
 Write-Host "Total Execution Time : "$Stopwatch.Elapsed
