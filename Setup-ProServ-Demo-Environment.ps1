@@ -232,27 +232,10 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 ## Setting up the development environment
 $stopwatch = [System.Diagnostics.Stopwatch]::new()
 $Stopwatch.Start()
-<#Write-Host "Installing Az module in the system."
-Install-Module -Name Az -AllowClobber -Scope CurrentUser
-Import-Module Az
 
-Write-Host "Installing Az.Synapse module in the system."
-Install-Module -Name Az.Synapse -AllowClobber -Scope CurrentUser
-Import-Module Az.Synapse#>
-
-$version = az --version
+az --version --only-show-errors
 if (!$?) {
-    Write-Host "Installing Azure CLI in the system."
-    ## Download the MSI
-    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
-    Write-Host "Downloaded Azure CLI installer."
-    
-    ## Invoke the MSI installer suppressing all output
-    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
-    Write-Host "Azure CLI installation completed."
-    
-    ##Remove the MSI installer
-    Remove-Item -Path .\AzureCLI.msi
+    throw "Azure CLI is not installed in the system. Please complete the prerequisite step and restart this script in a new powershell instance."
 }
 else {
     Write-Host "Azure CLI Version is available in the system. Skipping the installation step."
@@ -261,8 +244,7 @@ else {
 ## Login to Azure Account with the subscription you will be operating on.
 if ($TenantId -And $SubscriptionId) {
     az login --only-show-errors --output none
-    az account set --subscription $SubscriptionId
-    ##Connect-AzAccount -SubscriptionId $SubscriptionId -TenantId $TenantId
+    az account set --subscription $SubscriptionId    
     Write-Host "Completed logging in to azure account."
 }
 else {
