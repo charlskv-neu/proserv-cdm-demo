@@ -11,7 +11,7 @@
     .PARAMETER SynapseWorkspaceName
         Name to use for Azure Synapse Workspace
     .PARAMETER SyanpseDefaultADLSName
-        Name to use for ADLS account associated with Synpase Workspace
+        Name to use for ADLS account associated with Synpase Workspace    
 #>
 
 param(
@@ -34,72 +34,91 @@ param(
 
     [Parameter(Mandatory = $True)]
     [string]
-    $SyanpseDefaultADLSName
+    $SyanpseDefaultADLSName  
 )
 
 Function Set-ResourceGroup($resourceGroupName, $location) {  
     
-    Write-Host "Working with resource group name: '$resourceGroupName'"
+    Write-Host "Working with resource group name: '$resourceGroupName'."
 
-    Write-Host "Checking whether the resource group exists"
-    $resourceGroup = Get-AzResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
+    Write-Host "Checking whether the resource group exists."
+    $resourceGroup = az group show --name $resourceGroupName
     if (!$resourceGroup) {
-        Write-Host "Resource group '$resourceGroupName' does not exist. Creating new resource group";
+        Write-Host "Resource group '$resourceGroupName' does not exist. Creating new resource group.";
         
-        Write-Host "Creating resource group '$resourceGroupName' in location '$location'";
-        New-AzResourceGroup -Name $resourceGroupName -Location $location -ErrorAction Stop
+        Write-Host "Creating resource group '$resourceGroupName' in location '$location'.";
+        az group create --name $resourceGroupName --location $location --only-show-errors --output none
+        if (!$?) {
+            throw "An error occurred while creating resource group."
+        }
     }
     else {
-        Write-Host "Using existing resource group '$resourceGroupName'";
+        Write-Host "Using existing resource group '$resourceGroupName'.";
     }
 }
 
 Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentName, $templateFilePath, $parametersFilePath, $overridenParameters) {
     if (!(Test-Path $templateFilePath)) {        
-        Write-Host "ARM template file does not exist at path '$templateFilePath'"
+        throw "ARM template file does not exist at path '$templateFilePath'."
     }
     elseif (!(Test-Path $parametersFilePath)) {        
-        Write-Host "ARM template parameter file does not exist at path '$parametersFilePath'"
+        throw "ARM template parameter file does not exist at path '$parametersFilePath'."
     }
     else {       
-        Write-Host "Loading parameters from file"
-        $parametersFromFile = Get-Content -Raw -Encoding UTF8 -Path $parametersFilePath | ConvertFrom-Json
-        
-        Write-Host "Overriding parameters"        
-        $parameterObject = @{}; 
-        $parametersFromFile.parameters | Get-Member -MemberType *Property | % {
-            $parameterObject.($_.name) = $parametersFromFile.parameters.($_.name).value; }
+        Write-Host "Loading parameters from file."
+        $templateParametersFromFile = Get-Content -Raw -Encoding UTF8 -Path $parametersFilePath | ConvertFrom-Json
+        $originalParameterContent = $templateParametersFromFile | ConvertTo-Json 
+        $parametersFromFile = $templateParametersFromFile
+        Write-Host "Overriding parameters."       
         foreach ($parameterName in $overridenParameters.Keys) {          
             $parameterValue = $overridenParameters.$parameterName            
-            $parameterObject["$parameterName"] = $parameterValue     
+            $parametersFromFile.parameters.$parameterName.value = $parameterValue     
         }        
-        Write-Host "Starting deployment '$deploymentName'"        
-        New-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -Mode Incremental -TemplateFile $templateFilePath -TemplateParameterObject $parameterObject -ErrorAction Stop 
-        Write-Host "Deployment '$deploymentName' completed"        
+        $parametersFromFile | ConvertTo-Json | Out-File -FilePath $parametersFilePath
+        Write-Host "Starting deployment '$deploymentName'."        
+        az deployment group create --resource-group $resourceGroupName --name $deploymentName --mode Incremental --template-file $templateFilePath --parameters $parametersFilePath --only-show-errors
+        if (!$?) {
+            $originalParameterContent | Out-File -FilePath $parametersFilePath
+            throw "An error occurred while deploying '$deploymentName' to resource group '$resourceGroupName'."
+        }
+        else {
+            $originalParameterContent | Out-File -FilePath $parametersFilePath
+            Write-Host "Deployment '$deploymentName' completed."
+        }                
     }    
 }
 
 Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Linked service definition file does not exist at path '$definitionFilePath'"
+            Write-Host "Linked service definition file does not exist at path '$definitionFilePath'."
         }  
         else {
-            $linkedService = Get-AzSynapseLinkedService -WorkspaceName $workspaceName -Name $linkedServiceName -ErrorAction SilentlyContinue
+            $linkedService = az synapse linked-service show --workspace-name $workspaceName --name $linkedServiceName --only-show-errors
             if (!$linkedService) {
-                az synapse linked-service create --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath
-                Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'"
+                az synapse linked-service create --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors               
+                if (!$?) {
+                    throw "An error occurred while creating linked service."
+                }
+                else {
+                    Write-Host "Created linked service '$linkedServiceName' in synapse workspace '$workspaceName'."
+                }
             }
             else {
-                az synapse linked-service set --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath
-                Write-Host "Updated linked service '$linkedServiceName' in synapse workspace '$workspaceName'"
+                az synapse linked-service set --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors                
+                if (!$?) {
+                    throw "An error occurred while updating linked service."
+                }
+                else {
+                    Write-Host "Updated linked service '$linkedServiceName' in synapse workspace '$workspaceName'."
+                }
             }
                     
         }
     }
     catch {
         Write-Host "An error occurred:"
-        Write-Host $_
+        throw $_
     }
      
 }
@@ -107,70 +126,100 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
 Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Dataset definition file does not exist at path '$definitionFilePath'"
+            Write-Host "Dataset definition file does not exist at path '$definitionFilePath'."
         }  
         else {
-            $dataSet = Get-AzSynapseDataset -WorkspaceName $workspaceName -Name $dataSetName -ErrorAction SilentlyContinue
+            $dataSet = az synapse dataset show --workspace-name $workspaceName --name $dataSetName --only-show-errors
             if(!$dataSet){
-                az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath    
-                Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'"
+                az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors                
+                if (!$?) {
+                    throw "An error occurred while creating dataset."
+                }
+                else {
+                    Write-Host "Created dataset '$dataSetName' in synapse workspace '$workspaceName'."
+                }
             }
             else {
-                az synapse dataset set --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath    
-                Write-Host "Updated dataset '$dataSetName' in synapse workspace '$workspaceName'"
+                az synapse dataset set --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors
+                if (!$?) {
+                    throw "An error occurred while updating dataset."
+                }
+                else {
+                    Write-Host "Updated dataset '$dataSetName' in synapse workspace '$workspaceName'."                    
+                }                
             }
                     
         }   
     }
     catch {
         Write-Host "An error occurred:"
-        Write-Host $_
+        throw $_
     }     
 }
 
 Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'"
+            Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'."
         }  
         else {
-            $dataFlow = Get-AzSynapseDataFlow -WorkspaceName $workspaceName -Name $dataFlowName -ErrorAction SilentlyContinue
+            $dataFlow = az synapse data-flow show --workspace-name $workspaceName --name $dataFlowName --only-show-errors
             if(!$dataFlow){
-                az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath         
-                Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'"
+                az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors
+                if (!$?) {
+                    throw "An error occurred while creating dataflow."
+                }
+                else {
+                    Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'."
+                }                
             }
             else{
-                az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath         
-                Write-Host "Updated dataflow '$dataFlowName' in synapse workspace '$workspaceName'"
+                az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors
+                if (!$?) {
+                    throw "An error occurred while updating dataflow."
+                }
+                else {
+                    Write-Host "Updated dataflow '$dataFlowName' in synapse workspace '$workspaceName'."
+                }                
             }                    
         }
     }
     catch {
         Write-Host "An error occurred:"
-        Write-Host $_
+        throw $_
     }        
 }
 
 Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'"
+            Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'."
         }  
         else {
-            $pipeline = Get-AzSynapsePipeline -WorkspaceName $workspaceName -Name $pipelineName -ErrorAction SilentlyContinue
+            $pipeline = az synapse pipeline show --workspace-name $workspaceName --name $pipelineName --only-show-errors
             if(!$pipeline){
-                az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath
-                Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'"
+                az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors
+                if (!$?) {
+                    throw "An error occurred while creating pipeline."
+                }
+                else {
+                    Write-Host "Created pipeline '$pipelineName' in synapse workspace '$workspaceName'."
+                }                
             }
             else {
-                az synapse pipeline set --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath
-                Write-Host "Updated pipeline '$pipelineName' in synapse workspace '$workspaceName'"
+                az synapse pipeline set --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors
+                if (!$?) {
+                    throw "An error occurred while upating pipeline."
+                }
+                else {
+                    Write-Host "Updated pipeline '$pipelineName' in synapse workspace '$workspaceName'."
+                }                
             }                    
         }
     }
     catch {
         Write-Host "An error occurred:"
-        Write-Host $_
+        throw $_
     }        
 }
 
@@ -183,20 +232,41 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 ## Setting up the development environment
 $stopwatch = [System.Diagnostics.Stopwatch]::new()
 $Stopwatch.Start()
-Write-Host "Installing Az module in the system"
+<#Write-Host "Installing Az module in the system."
 Install-Module -Name Az -AllowClobber -Scope CurrentUser
 Import-Module Az
 
-Write-Host "Installing Az.Synapse module in the system"
+Write-Host "Installing Az.Synapse module in the system."
 Install-Module -Name Az.Synapse -AllowClobber -Scope CurrentUser
-Import-Module Az.Synapse
+Import-Module Az.Synapse#>
+
+$version = az --version
+if (!$?) {
+    Write-Host "Installing Azure CLI in the system."
+    ## Download the MSI
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+    Write-Host "Downloaded Azure CLI installer."
+    
+    ## Invoke the MSI installer suppressing all output
+    Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
+    Write-Host "Azure CLI installation completed."
+    
+    ##Remove the MSI installer
+    Remove-Item -Path .\AzureCLI.msi
+}
+else {
+    Write-Host "Azure CLI Version is available in the system. Skipping the installation step."
+}
 
 ## Login to Azure Account with the subscription you will be operating on.
 if ($TenantId -And $SubscriptionId) {
-    Connect-AzAccount -SubscriptionId $SubscriptionId -TenantId $TenantId
+    az login --only-show-errors --output none
+    az account set --subscription $SubscriptionId
+    ##Connect-AzAccount -SubscriptionId $SubscriptionId -TenantId $TenantId
+    Write-Host "Completed logging in to azure account."
 }
 else {
-    Write-Output "Unable to select the subscription. Please provide the tenant Id and subscription you're connecting to."
+    Write-Host "Unable to select the subscription. Please provide the tenant Id and subscription you're connecting to."
 }
 
 $location = "East US"
@@ -210,9 +280,9 @@ $deploymentName = "AzureSynapseAnalyticsDeployment" + $today
 $templateFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseAnalytics.json"
 $parametersFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseAnalytics.parameters.json"
 $defaultDataLakeStorageFilesystemName = $SyanpseDefaultADLSName + "defaultstorage"
-$loggedInUserAccount = (Get-AzContext).Account
-$loggedInUserId = $loggedInUserAccount.Id
-$loggedInUserObjectId = $loggedInUserAccount.ExtendedProperties.HomeAccountId.Split('.')[0]
+$loggedInUserAccount = az ad signed-in-user show | ConvertFrom-Json
+$loggedInUserId = $loggedInUserAccount.mail
+$loggedInUserObjectId = $loggedInUserAccount.objectId
 
 $overridenParameters = @{
     name                                 = $SynapseWorkspaceName

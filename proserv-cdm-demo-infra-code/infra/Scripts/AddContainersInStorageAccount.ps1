@@ -10,78 +10,95 @@ Param(
     [string] $DataSourcePath
 )
 
-$storageAccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -Name $SyanpseDefaultADLSName
-$ctx = $storageAccount.Context
+$storageAccount = az storage account show --resource-group $ResourceGroupName --name $SyanpseDefaultADLSName --only-show-errors
 
-Function Create-StorageContainer($containerName, $ctx)
+Function Create-StorageContainer($containerName, $syanpseDefaultADLSName)
 {
-    if(Get-AzStorageContainer -Name $containerName -Context $ctx -ErrorAction SilentlyContinue)  
+    $container = az storage container show --name $containerName --account-name $syanpseDefaultADLSName --only-show-errors
+    if($container)  
     {  
         Write-Host $containerName "- container already exists."  
     }  
     else  
     { 
-        New-AzStorageContainer -Name $containerName -Context $ctx -Permission off -ErrorAction Stop
-        Write-Host "Created container "$containerName
+        az storage container create --name $containerName --account-name $syanpseDefaultADLSName --public-access off --only-show-errors
+        if (!$?) {
+            throw "An error occurred while creating container."
+        }
+        else {
+            Write-Host "Created container "$containerName
+        }        
     }
 }
 
-Function Create-FolderInContainer($containerName, $ctx, $folderName)
+Function Create-FolderInContainer($containerName, $syanpseDefaultADLSName, $folderName)
 {
-    if(Get-AzDataLakeGen2Item -FileSystem $containerName -Path $folderName -Context $ctx -ErrorAction SilentlyContinue)  
+    $folder = az storage fs directory show --file-system $containerName --name $folderName --account-name $syanpseDefaultADLSName --only-show-errors
+    if($folder)  
     {  
         Write-Host $folderName "- folder already exists."  
     }  
     else  
     {              
-        New-AzDataLakeGen2Item -Context $ctx -FileSystem $containerName -Path $folderName -Directory -ErrorAction Stop
-        Write-Host "Created folder "$folderName
+        az storage fs directory create --account-name $syanpseDefaultADLSName --file-system $containerName --name $folderName --only-show-errors
+        if (!$?) {
+            throw "An error occurred while creating folder."
+        }
+        else {
+            Write-Host "Created folder "$folderName
+        }        
     }
 }
 
-Function Create-FileInFolder($containerName, $ctx, $folderName, $fileName, $filePath)
+Function Create-FileInFolder($containerName, $syanpseDefaultADLSName, $folderName, $fileName, $filePath)
 {
     $finalPath = $folderName + $fileName
-    if(Get-AzDataLakeGen2Item -FileSystem $containerName -Path $finalPath -Context $ctx -ErrorAction SilentlyContinue)  
+    $file = az storage fs file show --file-system $containerName --path $finalPath --account-name $syanpseDefaultADLSName --only-show-errors
+    if($file)  
     {  
         Write-Host $fileName "- file already exists."  
     }  
     else  
     {              
-        New-AzDataLakeGen2Item -Context $ctx -FileSystem $containerName -Path $finalPath -Source $filePath -Force -ErrorAction Stop
-        Write-Host "Created file "$fileName" inside "$folderName
+        az storage fs file upload --account-name $syanpseDefaultADLSName --file-system $containerName --path $finalPath --source $filePath --only-show-errors
+        if (!$?) {
+            throw "An error occurred while creating file."
+        }
+        else {
+            Write-Host "Created file "$fileName" inside "$folderName
+        }        
     }
 }
 
 $containerName = "crmdynamics"
-Create-StorageContainer $containerName $ctx
+Create-StorageContainer $containerName $SyanpseDefaultADLSName
 $folderName = ""
 $fileName = "General Journal.xlsx"
 $filePath = $DataSourcePath + "\data\Dynamics\" + $fileName
-Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
 
 $containerName = "models"
-Create-StorageContainer $containerName $ctx
+Create-StorageContainer $containerName $SyanpseDefaultADLSName
 $folderName = "cdm/"
-Create-FolderInContainer $containerName $ctx $folderName
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
 $fileName = "_allImports.cdm.json"
 $filePath = $DataSourcePath + "\cdm\GeneralLedger\" + $fileName
-Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
 $fileName = "GeneralJournal.cdm.json"
 $filePath = $DataSourcePath + "\cdm\GeneralLedger\" + $fileName
-Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
 $fileName = "GeneralLedger.manifest.cdm.json"
 $filePath = $DataSourcePath + "\cdm\GeneralLedger\" + $fileName
-Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
 $folderName = "data/"
-Create-FolderInContainer $containerName $ctx $folderName
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
 $folderName = "taxidata/cdm-model/"
-Create-FolderInContainer $containerName $ctx $folderName
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
 $fileName = "nyctaxidata.cdm.json"
 $filePath = $DataSourcePath + "\cdm\TaxiData\" + $fileName
-Create-FileInFolder $containerName $ctx $folderName $fileName $filePath
+Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
 $folderName = "taxidata/output_data/"
-Create-FolderInContainer $containerName $ctx $folderName
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
 
 $containerName = "cdmtaxidata"
-Create-StorageContainer $containerName $ctx
+Create-StorageContainer $containerName $SyanpseDefaultADLSName
