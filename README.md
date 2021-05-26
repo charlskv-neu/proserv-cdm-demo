@@ -33,7 +33,7 @@ Before you get started, copy and paste below variables in a text editor for late
 
 4. Use the following command to run the setup kit. 
 
-	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders
+	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders using the data collected earlier.
 	
 		```powershell
 		.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID>
@@ -48,6 +48,6 @@ Before you get started, copy and paste below variables in a text editor for late
 
 ## Share and Recieve data using Azure Data Share for demo
 
-- Refer this [tutorial] (https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
+- Refer this [tutorial](https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
 
 ***
