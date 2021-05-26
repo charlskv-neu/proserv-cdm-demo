@@ -243,7 +243,7 @@ else {
 
 ## Login to Azure Account with the subscription you will be operating on.
 if ($TenantId -And $SubscriptionId) {
-    az login --only-show-errors
+    az login
     az account set --subscription $SubscriptionId    
     Write-Host "Completed logging in to azure account."
 }
