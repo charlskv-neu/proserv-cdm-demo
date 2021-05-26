@@ -33,7 +33,7 @@ Before you get started, copy and paste below variables in a text editor for late
 
 4. Use the following command to run the setup kit. 
 
-	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders using the data collected earlier.
+	- Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders using the data collected earlier.
 	
 	```powershell
 	.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID> -SubscriptionId <SubscriptionId> -ResourceGroupName <ResourceGroupName> -SynapseWorkspaceName <SynapseWorkspaceName> -SyanpseDefaultADLSName <SyanpseDefaultADLSName>
