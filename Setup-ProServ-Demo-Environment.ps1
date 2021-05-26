@@ -42,18 +42,18 @@ Function Set-ResourceGroup($resourceGroupName, $location) {
     Write-Host "Working with resource group name: '$resourceGroupName'."
 
     Write-Host "Checking whether the resource group exists."
-    $resourceGroup = az group show --name $resourceGroupName
+    $resourceGroup = az group show --name $resourceGroupName --only-show-errors
     if (!$resourceGroup) {
-        Write-Host "Resource group '$resourceGroupName' does not exist. Creating new resource group.";
+        Write-Host "Resource group '$resourceGroupName' does not exist. Creating new resource group."
         
-        Write-Host "Creating resource group '$resourceGroupName' in location '$location'.";
+        Write-Host "Creating resource group '$resourceGroupName' in location '$location'."
         az group create --name $resourceGroupName --location $location --only-show-errors --output none
         if (!$?) {
             throw "An error occurred while creating resource group."
         }
     }
     else {
-        Write-Host "Using existing resource group '$resourceGroupName'.";
+        Write-Host "Using existing resource group '$resourceGroupName'."
     }
 }
 
@@ -69,14 +69,14 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
         $templateParametersFromFile = Get-Content -Raw -Encoding UTF8 -Path $parametersFilePath | ConvertFrom-Json
         $originalParameterContent = $templateParametersFromFile | ConvertTo-Json 
         $parametersFromFile = $templateParametersFromFile
-        Write-Host "Overriding parameters."       
+        Write-Host "Overriding parameters."
         foreach ($parameterName in $overridenParameters.Keys) {          
             $parameterValue = $overridenParameters.$parameterName            
             $parametersFromFile.parameters.$parameterName.value = $parameterValue     
         }        
         $parametersFromFile | ConvertTo-Json | Out-File -FilePath $parametersFilePath
-        Write-Host "Starting deployment '$deploymentName'."        
-        az deployment group create --resource-group $resourceGroupName --name $deploymentName --mode Incremental --template-file $templateFilePath --parameters $parametersFilePath --only-show-errors
+        Write-Host "Starting deployment '$deploymentName'."
+        az deployment group create --resource-group $resourceGroupName --name $deploymentName --mode Incremental --template-file $templateFilePath --parameters $parametersFilePath --only-show-errors --output none
         if (!$?) {
             $originalParameterContent | Out-File -FilePath $parametersFilePath
             throw "An error occurred while deploying '$deploymentName' to resource group '$resourceGroupName'."
@@ -91,12 +91,12 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
 Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Linked service definition file does not exist at path '$definitionFilePath'."
+            throw "Linked service definition file does not exist at path '$definitionFilePath'."
         }  
         else {
             $linkedService = az synapse linked-service show --workspace-name $workspaceName --name $linkedServiceName --only-show-errors
             if (!$linkedService) {
-                az synapse linked-service create --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors               
+                az synapse linked-service create --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors --output none               
                 if (!$?) {
                     throw "An error occurred while creating linked service."
                 }
@@ -105,7 +105,7 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
                 }
             }
             else {
-                az synapse linked-service set --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors                
+                az synapse linked-service set --workspace-name $workspaceName --name $linkedServiceName --file @$definitionFilePath --only-show-errors --output none             
                 if (!$?) {
                     throw "An error occurred while updating linked service."
                 }
@@ -117,7 +117,7 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
         }
     }
     catch {
-        Write-Host "An error occurred:"
+        Write-Host "An error occurred." -ForegroundColor Red
         throw $_
     }
      
@@ -126,12 +126,12 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
 Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Dataset definition file does not exist at path '$definitionFilePath'."
+            throw "Dataset definition file does not exist at path '$definitionFilePath'."
         }  
         else {
             $dataSet = az synapse dataset show --workspace-name $workspaceName --name $dataSetName --only-show-errors
             if(!$dataSet){
-                az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors                
+                az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors --output none            
                 if (!$?) {
                     throw "An error occurred while creating dataset."
                 }
@@ -140,19 +140,19 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
                 }
             }
             else {
-                az synapse dataset set --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors
+                az synapse dataset set --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while updating dataset."
                 }
                 else {
-                    Write-Host "Updated dataset '$dataSetName' in synapse workspace '$workspaceName'."                    
+                    Write-Host "Updated dataset '$dataSetName' in synapse workspace '$workspaceName'."
                 }                
             }
                     
         }   
     }
     catch {
-        Write-Host "An error occurred:"
+        Write-Host "An error occurred." -ForegroundColor Red
         throw $_
     }     
 }
@@ -160,12 +160,12 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
 Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Dataflow definition file does not exist at path '$definitionFilePath'."
+            throw "Dataflow definition file does not exist at path '$definitionFilePath'."
         }  
         else {
             $dataFlow = az synapse data-flow show --workspace-name $workspaceName --name $dataFlowName --only-show-errors
             if(!$dataFlow){
-                az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors
+                az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while creating dataflow."
                 }
@@ -174,7 +174,7 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
                 }                
             }
             else{
-                az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors
+                az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while updating dataflow."
                 }
@@ -185,7 +185,7 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
         }
     }
     catch {
-        Write-Host "An error occurred:"
+        Write-Host "An error occurred." -ForegroundColor Red
         throw $_
     }        
 }
@@ -193,12 +193,12 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
 Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
-            Write-Host "Pipeline definition file does not exist at path '$definitionFilePath'."
+            throw "Pipeline definition file does not exist at path '$definitionFilePath'."
         }  
         else {
             $pipeline = az synapse pipeline show --workspace-name $workspaceName --name $pipelineName --only-show-errors
             if(!$pipeline){
-                az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors
+                az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while creating pipeline."
                 }
@@ -207,7 +207,7 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
                 }                
             }
             else {
-                az synapse pipeline set --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors
+                az synapse pipeline set --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while upating pipeline."
                 }
@@ -218,7 +218,7 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
         }
     }
     catch {
-        Write-Host "An error occurred:"
+        Write-Host "An error occurred." -ForegroundColor Red
         throw $_
     }        
 }
@@ -233,22 +233,20 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 $stopwatch = [System.Diagnostics.Stopwatch]::new()
 $Stopwatch.Start()
 
-az --version --only-show-errors
+az --version --only-show-errors --output none
 if (!$?) {
     throw "Azure CLI is not installed in the system. Please complete the prerequisite step and restart this script in a new powershell instance."
 }
-else {
-    Write-Host "Azure CLI Version is available in the system. Skipping the installation step."
-}
 
+Write-Host "Starting setting up the demo environment."
 ## Login to Azure Account with the subscription you will be operating on.
 if ($TenantId -And $SubscriptionId) {
-    az login
-    az account set --subscription $SubscriptionId    
+    az login --tenant $TenantId --output none
+    az account set --subscription $SubscriptionId --only-show-errors --output none
     Write-Host "Completed logging in to azure account."
 }
 else {
-    Write-Host "Unable to select the subscription. Please provide the tenant Id and subscription you're connecting to."
+    throw "Unable to select the subscription. Please provide the tenant Id and subscription you're connecting to."
 }
 
 $location = "East US"
@@ -323,4 +321,4 @@ $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiPL_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 $Stopwatch.Stop()
-Write-Host "Total Execution Time : "$Stopwatch.Elapsed
+Write-Host "Total Execution Time : "$Stopwatch.Elapsed  -ForegroundColor DarkGray
