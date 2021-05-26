@@ -46,4 +46,8 @@ Before you get started, copy and paste below variables in a text editor for late
 	
 5. Once the deployment is complete, verify the synapse and storage account are created. Also, confirm if the Synapse artifacts are deployed too.
 
+## Share and Recieve data using Azure Data Share for demo
+
+- Refer this [tutorial] (https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
+
 ***
