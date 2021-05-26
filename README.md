@@ -4,11 +4,12 @@
 ## *Prerequisites* : 
  - Azure Subscription with a Resource Group to deploy
  - User must have owner access to the resource group
- 
+ - [Download and install](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli) the current release of the Azure CLI to run the deployment script. After the installation is complete, you will need to close and reopen any active Windows Command Prompt or PowerShell windows to use the Azure CLI.
+
 
 ## Collect data needed to run the scripts
 
-1. Before you get started, copy and paste below variables in a text editor for later use.:
+Before you get started, copy and paste below variables in a text editor for later use.:
 
 
 | Variable Name		       | Description	             					    | How to Get			      |
@@ -32,26 +33,17 @@
 
 4. Use the following command to run the setup kit. 
 
-	- .\Setup-ProServ-Demo-Environment.ps1
+	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders
 	
-	- When the powershell IDE prompts to supply values for the script arguments enter the values you previously collected one by one.
-	
-	- If you see the warning prompt, Untrusted repository, enter A, and then press Enter.
+		```powershell
+		.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID>
+		-SubscriptionId <SubscriptionId>
+		-ResourceGroupName <ResourceGroupName>
+		-SynapseWorkspaceName <SynapseWorkspaceName>
+		-SyanpseDefaultADLSName <SyanpseDefaultADLSName>
 	
 	- Complete the Azure login when prompted
 	
-	![Powershell Commands](images/ps-dply-2.PNG)
-	
 5. Once the deployment is complete, verify the synapse and storage account are created. Also, confirm if the Synapse artifacts are deployed too.
-
-6. Please follow below manual manual until the Powershell issue is resolved or an alternate approach is in place
-
-	- Navigate to Dataflow artifacts under Develop menu in Synapse Studio and click on "DynamicsGL_CDM".
-	- Once opened, click the code icon ({}) on the top right and replace it with json from [DynamicsGL_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/dataflow/DynamicsGL_CDM.json)
-		![Replace Dataflow Code](images/ps-dply-3.png)
-	- Repeat above steps for remaining dataflow and pipelines with its appropriate template as mentioned below
-		- Dataflow (NYTaxiDF_CDM) - Replace it with json from [NYTaxiDF_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/dataflow/NYTaxiDF_CDM.JSON)
-		- Pipeline (GeneralLedger_CDM) - Replace it with json from [GeneralLedger_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/pipeline/GeneralLedger_CDM.json)
-		- Pipeline (NYTaxiPL_CDM) - Replace it with json from [NYTaxiPL_CDM](https://github.com/charlskv-neu/proserv-cdm-demo/blob/feature/oneclick/proserv-cdm-demo-infra-code/WorkspaceTemplates/pipeline/NYTaxiPL_CDM.JSON)
 
 ***
