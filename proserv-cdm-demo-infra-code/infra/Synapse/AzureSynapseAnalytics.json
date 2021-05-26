@@ -42,10 +42,6 @@
         ""
       ]
     },
-    "tagValues": {
-      "type": "object",
-      "defaultValue": {}
-    },
     "storageSubscriptionID": {
       "type": "string",
       "defaultValue": "[subscription().subscriptionId]"
@@ -91,14 +87,7 @@
     },
     "userObjectId": {
       "type": "string"
-    },
-    "ContributorADGroupObjectID": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Contributor AD Group Object ID"
-      }
-    },
+    },    
     "sqlActiveDirectoryAdminName": {
       "type": "string"
     },
@@ -193,8 +182,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('defaultDataLakeStorageAccountName'))]",
                 "[concat('Microsoft.Resources/deployments/', parameters('defaultDataLakeStorageFilesystemName'))]"
-            ],
-            "tags": "[parameters('tagValues')]"
+            ]
         },
         {
             "condition": "[parameters('setWorkspaceIdentityRbacOnStorageAccount')]",
@@ -235,17 +223,7 @@
                         "principalId": "[parameters('userObjectId')]",
                         "principalType": "User"
                       }
-                    },
-                    {                      
-                      "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
-                      "apiVersion": "2018-09-01-preview",
-                      "name": "[concat(parameters('defaultDataLakeStorageAccountName'), '/Microsoft.Authorization/',  guid(concat(resourceGroup().id, '/', variables('storageBlobDataContributorRoleID'), '/', parameters('ContributorADGroupObjectID'), '/', parameters('storageRoleUniqueId'))))]",
-                      "properties": {
-                        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('storageBlobDataContributorRoleID'))]",
-                        "principalId": "[parameters('ContributorADGroupObjectID')]",
-                        "principalType": "Group"
-                      }
-                    }
+                    }                    
                   ]
                 }
             }
