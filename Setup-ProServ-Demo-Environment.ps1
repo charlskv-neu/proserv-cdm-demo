@@ -130,7 +130,7 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
         }  
         else {
             $dataSet = az synapse dataset show --workspace-name $workspaceName --name $dataSetName --only-show-errors
-            if(!$dataSet){
+            if (!$dataSet) {
                 az synapse dataset create --workspace-name $workspaceName --name $dataSetName --file @$definitionFilePath --only-show-errors --output none            
                 if (!$?) {
                     throw "An error occurred while creating dataset."
@@ -164,7 +164,7 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
         }  
         else {
             $dataFlow = az synapse data-flow show --workspace-name $workspaceName --name $dataFlowName --only-show-errors
-            if(!$dataFlow){
+            if (!$dataFlow) {
                 az synapse data-flow create --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while creating dataflow."
@@ -173,7 +173,7 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
                     Write-Host "Created dataflow '$dataFlowName' in synapse workspace '$workspaceName'."
                 }                
             }
-            else{
+            else {
                 az synapse data-flow set --workspace-name $workspaceName --name $dataFlowName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while updating dataflow."
@@ -197,7 +197,7 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
         }  
         else {
             $pipeline = az synapse pipeline show --workspace-name $workspaceName --name $pipelineName --only-show-errors
-            if(!$pipeline){
+            if (!$pipeline) {
                 az synapse pipeline create --workspace-name $workspaceName --name $pipelineName --file @$definitionFilePath --only-show-errors --output none
                 if (!$?) {
                     throw "An error occurred while creating pipeline."
@@ -275,6 +275,19 @@ $overridenParameters = @{
     sqlActiveDirectoryAdminName          = $loggedInUserId
     sqlActiveDirectoryAdminObjectId      = $loggedInUserObjectId
     userObjectId                         = $loggedInUserObjectId    
+}
+New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
+
+## Deploy Azure Synapse SQL Pool
+$deploymentName = "AzureSynapseSQLPoolsDeployment" + $today
+$templateFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.json"
+$parametersFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.parameters.json"
+$sqlPoolName = $SynapseWorkspaceName + "sqlpool"
+
+$overridenParameters = @{
+    sqlPoolName   = $sqlPoolName
+    workspaceName = $SynapseWorkspaceNam
+    location      = $location
 }
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
 
