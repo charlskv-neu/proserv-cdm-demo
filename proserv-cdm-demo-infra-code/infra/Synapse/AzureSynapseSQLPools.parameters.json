@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "sqlPoolName": {
-            "value": "ckvsqlpoolnewn"
+            "value": ""
         },
         "workspaceName": {
-            "value": "ckvsynapsepocnewn"
+            "value": ""
         },
         "location": {
-            "value": "eastus"
+            "value": ""
         },
         "tags": {
             "value": {}
