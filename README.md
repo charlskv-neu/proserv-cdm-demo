@@ -27,9 +27,12 @@ Before you get started, copy and paste below variables in a text editor for late
 2. On your computer, enter **PowerShell** in the search box on the Windows taskbar. In the search list, right-click **Windows PowerShell**, and then select **Run as administrator**.
 
 
-3. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-setup-script with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
+3. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-starter-kit with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
 
-	cd "path-to-setup-kit"
+	```powershell
+	cd <path-to-starter-kit>
+	dir -Path <path-to-starter-kit> -Recurse | Unblock-File
+	```
 
 4. Use the following command to run the setup kit. 
 
