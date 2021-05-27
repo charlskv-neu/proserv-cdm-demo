@@ -22,7 +22,7 @@ Before you get started, copy and paste below variables in a text editor for late
 
 ## Prepare starter kit and run the client-side setup scripts
 
-1. [Download the starter kit](https://github.com/charlskv-neu/proserv-cdm-demo/tree/feature/oneclick) , and extract its contents to the location of your choice.
+1. [Download the starter kit](https://github.com/charlskv-neu/proserv-cdm-demo/tree/development) , and extract its contents to the location of your choice.
 
 2. On your computer, enter **PowerShell** in the search box on the Windows taskbar. In the search list, right-click **Windows PowerShell**, and then select **Run as administrator**.
 
@@ -33,17 +33,18 @@ Before you get started, copy and paste below variables in a text editor for late
 
 4. Use the following command to run the setup kit. 
 
-	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders
+	- Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders using the data collected earlier.
 	
-		```powershell
-		.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID>
-		-SubscriptionId <SubscriptionId>
-		-ResourceGroupName <ResourceGroupName>
-		-SynapseWorkspaceName <SynapseWorkspaceName>
-		-SyanpseDefaultADLSName <SyanpseDefaultADLSName>
+	```powershell
+	.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID> -SubscriptionId <SubscriptionId> -ResourceGroupName <ResourceGroupName> -SynapseWorkspaceName <SynapseWorkspaceName> -SyanpseDefaultADLSName <SyanpseDefaultADLSName>
+	```
 	
 	- Complete the Azure login when prompted
 	
 5. Once the deployment is complete, verify the synapse and storage account are created. Also, confirm if the Synapse artifacts are deployed too.
+
+## Share and Recieve data using Azure Data Share for demo
+
+- Refer this [tutorial](https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
 
 ***
