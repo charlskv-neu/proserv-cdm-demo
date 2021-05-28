@@ -286,7 +286,7 @@ $sqlPoolName = $SynapseWorkspaceName + "sqlpool"
 
 $overridenParameters = @{
     sqlPoolName   = $sqlPoolName
-    workspaceName = $SynapseWorkspaceNam
+    workspaceName = $SynapseWorkspaceName
     location      = $location
 }
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
