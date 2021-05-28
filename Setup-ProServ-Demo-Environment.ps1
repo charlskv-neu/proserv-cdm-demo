@@ -233,6 +233,9 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
 $stopwatch = [System.Diagnostics.Stopwatch]::new()
 $Stopwatch.Start()
 
+$directorypath = Split-Path $MyInvocation.MyCommand.Path
+dir -Path $directorypath -Recurse | Unblock-File
+
 az --version --only-show-errors --output none
 if (!$?) {
     throw "Azure CLI is not installed in the system. Please complete the prerequisite step and restart this script in a new powershell instance."
