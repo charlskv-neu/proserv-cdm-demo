@@ -1,84 +1,84 @@
 {
-   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-   "contentVersion": "1.0.0.0",
-   "parameters": {
-      "name": {
-         "value": ""
+   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{
+      "name":{
+         "value":""
       },
-      "location": {
-         "value": ""
+      "location":{
+         "value":""
       },
-      "defaultDataLakeStorageAccountName": {
-         "value": ""
+      "defaultDataLakeStorageAccountName":{
+         "value":""
       },
-      "defaultDataLakeStorageFilesystemName": {
-         "value": ""
+      "defaultDataLakeStorageFilesystemName":{
+         "value":""
       },
-      "sqlAdministratorLogin": {
-         "value": ""
+      "sqlAdministratorLogin":{
+         "value":""
       },
-      "sqlAdministratorLoginPassword": {
-         "value": ""
+      "sqlAdministratorLoginPassword":{
+         "value":""
       },
-      "setWorkspaceIdentityRbacOnStorageAccount": {
-         "value": true
+      "setWorkspaceIdentityRbacOnStorageAccount":{
+         "value":true
       },
-      "allowAllConnections": {
-         "value": true
+      "allowAllConnections":{
+         "value":true
       },
-      "grantWorkspaceIdentityControlForSql": {
-         "value": "Enabled"
+      "grantWorkspaceIdentityControlForSql":{
+         "value":"Enabled"
       },
-      "managedVirtualNetwork": {
-         "value": ""
+      "managedVirtualNetwork":{
+         "value":""
       },
-      "storageSubscriptionID": {
-         "value": ""
+      "storageSubscriptionID":{
+         "value":""
       },
-      "storageResourceGroupName": {
-         "value": ""
+      "storageResourceGroupName":{
+         "value":""
       },
-      "storageLocation": {
-         "value": ""
+      "storageLocation":{
+         "value":""
       },
-      "storageRoleUniqueId": {
-         "value": ""
+      "storageRoleUniqueId":{
+         "value":""
       },
-      "isNewStorageAccount": {
-         "value": true
+      "isNewStorageAccount":{
+         "value":true
       },
-      "isNewFileSystemOnly": {
-         "value": false
+      "isNewFileSystemOnly":{
+         "value":false
       },
-      "adlaResourceId": {
-         "value": ""
+      "adlaResourceId":{
+         "value":""
       },
-      "storageAccessTier": {
-         "value": "Hot"
+      "storageAccessTier":{
+         "value":"Hot"
       },
-      "storageAccountType": {
-         "value": "Standard_RAGRS"
+      "storageAccountType":{
+         "value":"Standard_RAGRS"
       },
-      "storageSupportsHttpsTrafficOnly": {
-         "value": true
+      "storageSupportsHttpsTrafficOnly":{
+         "value":true
       },
-      "storageKind": {
-         "value": "StorageV2"
+      "storageKind":{
+         "value":"StorageV2"
       },
-      "storageIsHnsEnabled": {
-         "value": true
+      "storageIsHnsEnabled":{
+         "value":true
       },
-      "userObjectId": {
-         "value": ""
+      "userObjectId":{
+         "value":""
       },
-      "sqlActiveDirectoryAdminName": {
-         "value": ""
+      "sqlActiveDirectoryAdminName":{
+         "value":""
       },
-      "sqlActiveDirectoryAdminObjectId": {
-         "value": ""
+      "sqlActiveDirectoryAdminObjectId":{
+         "value":""
       },
-      "setSbdcRbacOnStorageAccount": {
-         "value": true
+      "setSbdcRbacOnStorageAccount":{
+         "value":true
       }
    }
 }
