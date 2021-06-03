@@ -88,6 +88,62 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
     }    
 }
 
+Function New-SynapseIntegrationRuntime($workspaceName, $integrationRuntimeName, $definitionFilePath, $resourceGroupName) {
+    try {
+        if (!(Test-Path $definitionFilePath)) {        
+            throw "Integration runtime definition file does not exist at path '$definitionFilePath'."
+        }  
+        else {
+            $integrationRuntime = az synapse integration-runtime show --workspace-name $workspaceName --name $integrationRuntimeName --resource-group $resourceGroupName --only-show-errors
+            $propertiesFromFile = Get-Content -Raw -Encoding UTF8 -Path $definitionFilePath | ConvertFrom-Json
+            $properties = $propertiesFromFile.properties
+            $typeProperties = $properties.typeProperties
+            $computeProperties = $typeProperties.computeProperties
+            $dataFlowProperties = $computeProperties.dataFlowProperties
+            $createCommand = "az synapse integration-runtime create --workspace-name $workspaceName --name $integrationRuntimeName --resource-group $resourceGroupName";
+            if ($properties.type) {
+                $createCommand += " --type " + $properties.type
+            }
+            if ($dataFlowProperties.computeType) {
+                $createCommand += " --compute-type " + $dataFlowProperties.computeType
+            }
+            if ($dataFlowProperties.coreCount) {
+                $createCommand += " --core-count " + $dataFlowProperties.coreCount
+            }
+            if ($computeProperties.location) {
+                $createCommand += " --location " + $computeProperties.location
+            }
+            if ($computeProperties.timeToLive) {
+                $createCommand += " --time-to-live " + $computeProperties.timeToLive
+            }
+            $createCommand += " --only-show-errors --output none"
+            if (!$integrationRuntime) {                
+                Invoke-Expression $createCommand
+                if (!$?) {
+                    throw "An error occurred while creating integration runtime."
+                }
+                else {
+                    Write-Host "Created integration runtime '$integrationRuntimeName' in synapse workspace '$workspaceName'."
+                }
+            }
+            else {
+                Invoke-Expression $createCommand           
+                if (!$?) {
+                    throw "An error occurred while updating integration runtime."
+                }
+                else {
+                    Write-Host "Updated integration runtime '$integrationRuntimeName' in synapse workspace '$workspaceName'."
+                }
+            }                    
+        }
+    }
+    catch {
+        Write-Host "An error occurred." -ForegroundColor Red
+        throw $_
+    }
+     
+}
+
 Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -296,6 +352,10 @@ New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templa
 
 ## Deploy Azure Synapse Artifacts
 $artifactsBasePath = "./proserv-cdm-demo-infra-code/WorkspaceTemplates/";
+
+$integrationRuntimeName = "IntegrationRuntimePerformance";
+$definitionFilePath = $artifactsBasePath + "integrationRuntime/IntegrationRuntimePerformance.json";
+New-SynapseIntegrationRuntime $SynapseWorkspaceName $integrationRuntimeName $definitionFilePath $ResourceGroupName;
 
 $linkedServiceName = "adls_cdm";
 $definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json";
