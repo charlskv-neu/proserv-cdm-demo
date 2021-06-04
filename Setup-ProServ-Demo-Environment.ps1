@@ -279,6 +279,14 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
     }        
 }
 
+Function Execute-SqlScript ($serverName, $databaseName, $userName, $userPassword, $scriptFile) {
+    $Error.Clear()
+    SqlServer\Invoke-Sqlcmd -ServerInstance $serverName -Database $databaseName -Username "$userName" -Password "$userPassword" -InputFile $scriptFile -OutputSqlErrors $true
+    if ($Error -ne $null){
+        throw $Error
+    }
+}
+
 ##############################################################################
 ##
 ## Entry Method. Execution begins here.
@@ -293,6 +301,10 @@ az --version --only-show-errors --output none
 if (!$?) {
     throw "Azure CLI is not installed in the system. Please complete the prerequisite step and restart this script in a new powershell instance."
 }
+
+Write-Host "Installing SqlServer module in the system."
+Install-Module -Name SqlServer -AllowClobber -Scope CurrentUser
+Import-Module SqlServer
 
 Write-Host "Starting setting up the demo environment."
 ## Login to Azure Account with the subscription you will be operating on.
@@ -319,6 +331,8 @@ $defaultDataLakeStorageFilesystemName = $SyanpseDefaultADLSName + "defaultstorag
 $loggedInUserAccount = az ad signed-in-user show | ConvertFrom-Json
 $loggedInUserId = $loggedInUserAccount.mail
 $loggedInUserObjectId = $loggedInUserAccount.objectId
+$adminUserName = 'sqladmin'
+$adminPassword = 'Password@123'
 
 $overridenParameters = @{
     name                                 = $SynapseWorkspaceName
@@ -330,7 +344,9 @@ $overridenParameters = @{
     storageLocation                      = $location
     sqlActiveDirectoryAdminName          = $loggedInUserId
     sqlActiveDirectoryAdminObjectId      = $loggedInUserObjectId
-    userObjectId                         = $loggedInUserObjectId    
+    userObjectId                         = $loggedInUserObjectId
+    sqlAdministratorLogin                = $adminUserName
+    sqlAdministratorLoginPassword        = $adminPassword
 }
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
 
@@ -392,6 +408,38 @@ New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 $pipelineName = "NYTaxiPL_CDM";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiPL_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+
+## Create database objects in sql pool
+$sqlScriptsBasePath = "./proserv-cdm-demo-infra-code/SqlPoolObjects/";
+
+$onDemandSqlPoolName = "$SynapseWorkspaceName-ondemand.sql.azuresynapse.net"
+$dedicatedSqlPoolName = "$SynapseWorkspaceName.sql.azuresynapse.net"
+$masterDatabaseName = "master"
+$proservDatabaseName = "proserv"
+
+
+$scriptFile = $sqlScriptsBasePath + "Databases/proserv.sql"
+Execute-SqlScript $onDemandSqlPoolName $masterDatabaseName $adminUserName $adminPassword $scriptFile
+Write-Host "Created proserv database in on demand sql pool."
+
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<masterKeyPassword>" -ParameterValue $adminPassword
+$scriptFile = $sqlScriptsBasePath + "External Resources/Credential.sql"
+Execute-SqlScript $onDemandSqlPoolName $proservDatabaseName $adminUserName $adminPassword $scriptFile
+Write-Host "Created master key in $proservDatabaseName database in on demand sql pool."
+Execute-SqlScript $dedicatedSqlPoolName $sqlPoolName $adminUserName $adminPassword $scriptFile
+Write-Host "Created master key in $sqlPoolName database in dedicated sql pool."
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<masterKeyPassword>" -ParameterName $adminPassword
+
+$scriptFile = $sqlScriptsBasePath + "Stored Procedures/usp_GeneralJournal_ext.sql"
+Execute-SqlScript $onDemandSqlPoolName $proservDatabaseName $adminUserName $adminPassword $scriptFile
+Write-Host "Created stored procedure usp_GeneralJournal_ext in $proservDatabaseName database in on demand sql pool."
+$scriptFile = $sqlScriptsBasePath + "Stored Procedures/usp_NycTaxi_External_Table.sql"
+Execute-SqlScript $onDemandSqlPoolName $proservDatabaseName $adminUserName $adminPassword $scriptFile
+Write-Host "Created stored procedure usp_NycTaxi_External_Table in $proservDatabaseName database in on demand sql pool."
+
+$scriptFile = $sqlScriptsBasePath + "Stored Procedures/uspDropAndCreateTaxiDataTable.sql"
+Execute-SqlScript $dedicatedSqlPoolName $sqlPoolName $adminUserName $adminPassword $scriptFile
+Write-Host "Created stored procedure uspDropAndCreateTaxiDataTable in $sqlPoolName database in dedicated sql pool."
 
 $Stopwatch.Stop()
 Write-Host "Total Execution Time : "$Stopwatch.Elapsed  -ForegroundColor DarkGray

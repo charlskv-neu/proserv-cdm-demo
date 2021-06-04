@@ -1,0 +1,2 @@
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = '<masterKeyPassword>'
+GO
