@@ -1,0 +1,17 @@
+{
+  "manifestName": "cdmtaxidata.manifest.cdm.json",
+  "entities": [
+    {
+      "entityName": "nyctaxidata",
+      "entityPath": "nyctaxidata.cdm.json/nyctaxidata",
+      "type": "LocalEntity",
+      "exhibitTraits": []
+    }
+  ],
+  "relationships": [],
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "schema": "",
+  "imports": [],
+  "explanation": "",
+  "subManifests": []
+}
