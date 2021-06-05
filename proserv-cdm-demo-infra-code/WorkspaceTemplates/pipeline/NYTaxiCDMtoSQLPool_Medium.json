@@ -1,0 +1,336 @@
+{
+    "name": "NYTaxiCDMtoSQLPool_Medium",
+    "properties": {
+        "activities": [
+            {
+                "name": "CopyCDMtoSQL",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "DropAndCreateTable",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "wildcardFileName": "*.parquet",
+                            "enablePartitionDiscovery": false
+                        }
+                    },
+                    "sink": {
+                        "type": "SqlDWSink",
+                        "allowPolyBase": true,
+                        "polyBaseSettings": {
+                            "rejectValue": 0,
+                            "rejectType": "value",
+                            "useTypeDefault": false
+                        }
+                    },
+                    "enableStaging": true,
+                    "stagingSettings": {
+                        "linkedServiceName": {
+                            "referenceName": "AzureDataLakeStorageDemo",
+                            "type": "LinkedServiceReference"
+                        },
+                        "path": "staging"
+                    },
+                    "parallelCopies": 32,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "vendor_id",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "vendor_id",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "pickup_datetime",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "pickup_datetime",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "dropoff_datetime",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "dropoff_datetime",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "store_and_foreward",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "store_and_foreward",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "rate_code_id",
+                                    "type": "Int64"
+                                },
+                                "sink": {
+                                    "name": "rate_code_id",
+                                    "type": "Int32"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "pickup_longitude",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "pickup_longitude",
+                                    "type": "Single"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "pickup_latitude",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "pickup_latitude",
+                                    "type": "Single"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "dropoff_longitude",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "dropoff_longitude",
+                                    "type": "Single"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "dropoff_latitude",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "dropoff_latitude",
+                                    "type": "Single"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "passenger_count",
+                                    "type": "Int64"
+                                },
+                                "sink": {
+                                    "name": "passenger_count",
+                                    "type": "Int32"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "trip_distance",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "trip_distance",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "fare_amount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "fare_amount",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "extra",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "extra",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "mta_tax",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "mta_tax",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "tip_amount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "tip_amount",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "tolls_amount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "tolls_amount",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "ehail_fee",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "ehail_fee",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "total_amount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "total_amount",
+                                    "type": "Decimal"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "payment_type",
+                                    "type": "Int64"
+                                },
+                                "sink": {
+                                    "name": "payment_type",
+                                    "type": "Int32"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "trip_type",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "trip_type",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "TaxiDataCDMParquet",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "FileSystem": {
+                                "value": "@pipeline().parameters.Container_Name",
+                                "type": "Expression"
+                            },
+                            "FileDirectory": {
+                                "value": "@pipeline().parameters.Folder_Path",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "taxiDataDedicatedSQL",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "schema": "dbo",
+                            "table_name": {
+                                "value": "@pipeline().parameters.SQLPool_Table_Name",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "DropAndCreateTable",
+                "type": "SqlPoolStoredProcedure",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "sqlPool": {
+                    "referenceName": "proservsqlpl",
+                    "type": "SqlPoolReference"
+                },
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[uspDropAndCreateTaxiDataTable]",
+                    "storedProcedureParameters": {
+                        "table_name": {
+                            "value": {
+                                "value": "@pipeline().parameters.SQLPool_Table_Name",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        }
+                    }
+                }
+            }
+        ],
+        "parameters": {
+            "Container_Name": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "Folder_Path": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaximediumoutput/nyctaxidata/2021-06-04"
+            },
+            "SQLPool_Table_Name": {
+                "type": "string",
+                "defaultValue": "NycTaxi_Medium"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-04T13:57:45Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

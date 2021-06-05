@@ -354,7 +354,7 @@ New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templa
 $deploymentName = "AzureSynapseSQLPoolsDeployment" + $today
 $templateFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.json"
 $parametersFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.parameters.json"
-$sqlPoolName = "proservsqlpl" ##$SynapseWorkspaceName + "sqlpool"
+$sqlPoolName = $SynapseWorkspaceName + "sqlpool"
 
 $overridenParameters = @{
     sqlPoolName   = $sqlPoolName
@@ -373,11 +373,11 @@ $integrationRuntimeName = "IntegrationRuntimePerformance";
 $definitionFilePath = $artifactsBasePath + "integrationRuntime/IntegrationRuntimePerformance.json";
 New-SynapseIntegrationRuntime $SynapseWorkspaceName $integrationRuntimeName $definitionFilePath $ResourceGroupName;
 
-## $linkedServiceName = "adls_cdm";
-## $definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json";
-## .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<adls_cdm_url>" -ParameterValue "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
-## New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
-## .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<adls_cdm_url>" -ParameterName "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
+$linkedServiceName = "adls_cdm";
+$definitionFilePath = $artifactsBasePath + "linkedService/adls_cdm.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<adls_cdm_url>" -ParameterValue "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<adls_cdm_url>" -ParameterName "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 
 $linkedServiceName = "AzureDataLakeStorageDemo";
 $definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDemo.json";
@@ -385,32 +385,12 @@ $definitionFilePath = $artifactsBasePath + "linkedService/AzureDataLakeStorageDe
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<AzureDataLakeStorageDemo_url>" -ParameterName "https://$SyanpseDefaultADLSName.dfs.core.windows.net"
 
-$linkedServiceName = "AzureSynapseAnalytics1";
-$definitionFilePath = $artifactsBasePath + "linkedService/AzureSynapseAnalytics1.json";
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
-New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
-
-$linkedServiceName = "SQLOnDemand";
-$definitionFilePath = $artifactsBasePath + "linkedService/SQLOnDemand.json";
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
-New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
-
 $dataSetName = "DynamicsGeneralJournalExcel";
 $definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
 New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
 
 $dataSetName = "TaxiDataParquet";
 $definitionFilePath = $artifactsBasePath + "dataset/TaxiDataParquet.json";
-New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
-
-$dataSetName = "TaxiDataCDMParquet";
-$definitionFilePath = $artifactsBasePath + "dataset/TaxiDataCDMParquet.json";
-New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
-
-$dataSetName = "taxiDataDedicatedSQL";
-$definitionFilePath = $artifactsBasePath + "dataset/taxiDataDedicatedSQL.json";
 New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
 
 $dataFlowName = "DynamicsGL_CDM";
@@ -421,40 +401,12 @@ $dataFlowName = "NYTaxiDF_CDM";
 $definitionFilePath = $artifactsBasePath + "dataflow/NYTaxiDF_CDM.json";
 New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
-## $pipelineName = "GeneralLedger_CDM";
-## $definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json";
-## New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-## 
-## $pipelineName = "NYTaxiPL_CDM";
-## $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiPL_CDM.json";
-## New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "GeneralLedger_CDM_Small";
-$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM_Small.json";
+$pipelineName = "GeneralLedger_CDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/GeneralLedger_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
-$pipelineName = "glCDMtoOnDemand_Small";
-$definitionFilePath = $artifactsBasePath + "pipeline/glCDMtoOnDemand_Small.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "NYTaxi_CDM_Large";
-$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxi_CDM_Large.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "NYTaxi_CDM_Medium";
-$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxi_CDM_Medium.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "NYTaxiCDMtoSQLonDemand_Medium";
-$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLonDemand_Medium.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "NYTaxiCDMtoSQLPool_Large";
-$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Large.json";
-New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-
-$pipelineName = "NYTaxiCDMtoSQLPool_Medium";
-$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Medium.json";
+$pipelineName = "NYTaxiPL_CDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiPL_CDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 ## Create database objects in sql pool
@@ -463,7 +415,7 @@ $sqlScriptsBasePath = "./proserv-cdm-demo-infra-code/SqlPoolObjects/";
 $onDemandSqlPoolName = "$SynapseWorkspaceName-ondemand.sql.azuresynapse.net"
 $dedicatedSqlPoolName = "$SynapseWorkspaceName.sql.azuresynapse.net"
 $masterDatabaseName = "master"
-$proservDatabaseName = "proservod"
+$proservDatabaseName = "proserv"
 
 
 $scriptFile = $sqlScriptsBasePath + "Databases/proserv.sql"

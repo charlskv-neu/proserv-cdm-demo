@@ -1,0 +1,67 @@
+{
+    "name": "NYTaxiCDMtoSQLonDemand_Medium",
+    "properties": {
+        "activities": [
+            {
+                "name": "Create NycTaxiExternalTable",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[usp_NycTaxi_External_Table]",
+                    "storedProcedureParameters": {
+                        "CDMLocation": {
+                            "value": {
+                                "value": "@pipeline().parameters.CDMLocation",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "Container": {
+                            "value": {
+                                "value": "@pipeline().parameters.Container",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "StorageAcc": {
+                            "value": {
+                                "value": "@pipeline().parameters.StorageAccount",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "SQLOnDemand",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "parameters": {
+            "StorageAccount": {
+                "type": "string",
+                "defaultValue": "debugproservdemosa"
+            },
+            "Container": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "CDMLocation": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaximediumoutput/nyctaxidata/2021-06-03/"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-03T10:33:46Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

@@ -1,0 +1,67 @@
+{
+    "name": "glCDMtoOnDemand_Small",
+    "properties": {
+        "activities": [
+            {
+                "name": "Create GL External Table",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[usp_GeneralJournal_ext]",
+                    "storedProcedureParameters": {
+                        "CDMLocation": {
+                            "value": {
+                                "value": "@pipeline().parameters.CDMLocation",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "Container": {
+                            "value": {
+                                "value": "@pipeline().parameters.Container",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "StorageAcc": {
+                            "value": {
+                                "value": "@pipeline().parameters.StorageAccount",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "SQLOnDemand",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "parameters": {
+            "CDMLocation": {
+                "type": "string",
+                "defaultValue": "gldata/glsmalloutput/GeneralJournal/2021-06-03/"
+            },
+            "Container": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "StorageAccount": {
+                "type": "string",
+                "defaultValue": "debugproservdemosa"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-03T17:43:28Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

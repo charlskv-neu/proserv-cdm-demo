@@ -113,5 +113,6 @@
                 "type": "UTF8"
             }
         ]
-    }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
 }
