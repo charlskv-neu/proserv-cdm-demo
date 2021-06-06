@@ -389,13 +389,13 @@ $linkedServiceName = "AzureSynapseAnalytics1";
 $definitionFilePath = $artifactsBasePath + "linkedService/AzureSynapseAnalytics1.json";
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterName "$SynapseWorkspaceName"
 
 $linkedServiceName = "SQLOnDemand";
 $definitionFilePath = $artifactsBasePath + "linkedService/SQLOnDemand.json";
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterValue "$SynapseWorkspaceName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterName "$SynapseWorkspaceName"
 
 $dataSetName = "DynamicsGeneralJournalExcel";
 $definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
