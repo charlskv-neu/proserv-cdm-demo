@@ -17,17 +17,15 @@ BEGIN
 		WITH IDENTITY = 'Managed Identity';
 	END
 
-	IF EXISTS (SELECT top 1 1 FROM sys.external_data_sources WHERE NAME='demoExtDS')
+	IF NOT EXISTS (SELECT top 1 1 FROM sys.external_data_sources WHERE NAME='demoExtDS')
 	BEGIN
-		DROP EXTERNAL DATA SOURCE demoExtDS;
+		DECLARE @CreateExtDS NVARCHAR(4000) = N'CREATE EXTERNAL DATA SOURCE demoExtDS
+		WITH (
+			LOCATION = ''abfss://'+@Container+'@'+@StorageAcc+'.dfs.core.windows.net'',
+			CREDENTIAL = demoCred
+		);';
+		EXEC sp_executesql @tsql = @CreateExtDS;
 	END;
-	
-	DECLARE @CreateExtDS NVARCHAR(4000) = N'CREATE EXTERNAL DATA SOURCE demoExtDS
-	WITH (
-		LOCATION = ''abfss://'+@Container+'@'+@StorageAcc+'.dfs.core.windows.net'',
-		CREDENTIAL = demoCred
-	);';
-	EXEC sp_executesql @tsql = @CreateExtDS;
 
 	IF NOT EXISTS (select top 1 1 from sys.external_file_formats where name = 'parquetfileformat')
 	BEGIN
@@ -41,12 +39,12 @@ BEGIN
 		
 	END
 
-	IF EXISTS (SELECT top 1 1 FROM sys.tables WHERE name='NycTaxi_External_Table')
+	IF EXISTS (SELECT top 1 1 FROM sys.tables WHERE name='NycTaxi_Medium_Ext')
 	BEGIN
-		DROP EXTERNAL TABLE [dbo].[NycTaxi_External_Table];
+		DROP EXTERNAL TABLE [dbo].[NycTaxi_Medium_Ext];
 	END
 
-	DECLARE @CreateExtTbl NVARCHAR(4000) = N'CREATE EXTERNAL TABLE [dbo].[NycTaxi_External_Table]
+	DECLARE @CreateExtTbl NVARCHAR(4000) = N'CREATE EXTERNAL TABLE [dbo].[NycTaxi_Medium_Ext]
 		(
 			[vendor_id] [nvarchar](4000),
 			[pickup_datetime] [nvarchar](4000),

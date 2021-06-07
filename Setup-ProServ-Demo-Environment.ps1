@@ -316,7 +316,8 @@ $location = "East US"
 Set-ResourceGroup $ResourceGroupName $location
 
 ## Deploy Azure Synapse Workspace resource.
-$today = Get-Date -Format "MM-dd-yyyy-HH-mm-ss" 
+$today = Get-Date -Format "MM-dd-yyyy-HH-mm-ss"
+$currentUTCDate = Get-Date ((Get-Date).ToUniversalTime()) -f "yyyy-MM-dd"
 $deploymentName = "AzureSynapseAnalyticsDeployment" + $today
 $templateFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseAnalytics.json"
 $parametersFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseAnalytics.parameters.json"
@@ -428,7 +429,11 @@ New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 $pipelineName = "glCDMtoOnDemand_Small";
 $definitionFilePath = $artifactsBasePath + "pipeline/glCDMtoOnDemand_Small.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SyanpseDefaultADLSName>" -ParameterValue "$SyanpseDefaultADLSName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>/" -ParameterValue "/$currentUTCDate/"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SyanpseDefaultADLSName>" -ParameterName "$SyanpseDefaultADLSName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>/" -ParameterName "/$currentUTCDate/"
 
 $pipelineName = "NYTaxi_CDM_Large";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxi_CDM_Large.json";
@@ -440,15 +445,23 @@ New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 $pipelineName = "NYTaxiCDMtoSQLonDemand_Medium";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLonDemand_Medium.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SyanpseDefaultADLSName>" -ParameterValue "$SyanpseDefaultADLSName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>/" -ParameterValue "/$currentUTCDate/"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SyanpseDefaultADLSName>" -ParameterName "$SyanpseDefaultADLSName"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>/" -ParameterName "/$currentUTCDate/"
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Large";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Large.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>/" -ParameterValue "/$currentUTCDate/"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>/" -ParameterName "/$currentUTCDate/"
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Medium";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Medium.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>/" -ParameterValue "/$currentUTCDate/"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>/" -ParameterName "/$currentUTCDate/"
 
 ## Create database objects in sql pool
 $sqlScriptsBasePath = "./proserv-cdm-demo-infra-code/SqlPoolObjects/";
