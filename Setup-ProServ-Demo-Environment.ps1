@@ -466,7 +466,7 @@ $masterDatabaseName = "master"
 $proservDatabaseName = "proservod"
 
 
-$scriptFile = $sqlScriptsBasePath + "Databases/proserv.sql"
+$scriptFile = $sqlScriptsBasePath + "Databases/proservod.sql"
 Execute-SqlScript $onDemandSqlPoolName $masterDatabaseName $adminUserName $adminPassword $scriptFile
 Write-Host "Created proserv database in on demand sql pool."
 
