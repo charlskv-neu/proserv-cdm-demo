@@ -30,7 +30,6 @@ Function Create-StorageContainer($containerName, $syanpseDefaultADLSName)
         }        
     }
 }
-
 Function Create-FolderInContainer($containerName, $syanpseDefaultADLSName, $folderName)
 {
     $folder = az storage fs directory show --file-system $containerName --name $folderName --account-name $syanpseDefaultADLSName --only-show-errors
@@ -49,7 +48,6 @@ Function Create-FolderInContainer($containerName, $syanpseDefaultADLSName, $fold
         }        
     }
 }
-
 Function Create-FileInFolder($containerName, $syanpseDefaultADLSName, $folderName, $fileName, $filePath)
 {
     $finalPath = $folderName + $fileName
@@ -69,9 +67,25 @@ Function Create-FileInFolder($containerName, $syanpseDefaultADLSName, $folderNam
         }        
     }
 }
+Function Upload-FilesFromFolder($containerName, $syanpseDefaultADLSName, $folderName, $folderPath)
+{
+    $filesToUpload = Get-ChildItem -Path $folderPath
+    for ($i=0; $i -lt $filesToUpload.Count; $i++) {
+        $fileName = $filesToUpload[$i].Name
+        $filePath = $folderPath +$fileName
+        Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
+    }
+}
+
+$containerName = "cdmtaxidata"
+Create-StorageContainer $containerName $SyanpseDefaultADLSName
+
+$containerName = "staging"
+Create-StorageContainer $containerName $SyanpseDefaultADLSName
 
 $containerName = "crmdynamics"
 Create-StorageContainer $containerName $SyanpseDefaultADLSName
+
 $folderName = ""
 $fileName = "General Journal.xlsx"
 $filePath = $DataSourcePath + "/data/Dynamics/" + $fileName
@@ -79,26 +93,28 @@ Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName
 
 $containerName = "models"
 Create-StorageContainer $containerName $SyanpseDefaultADLSName
-$folderName = "cdm/"
-Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
-$fileName = "_allImports.cdm.json"
-$filePath = $DataSourcePath + "/cdm/GeneralLedger/" + $fileName
-Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
-$fileName = "GeneralJournal.cdm.json"
-$filePath = $DataSourcePath + "/cdm/GeneralLedger/" + $fileName
-Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
-$fileName = "GeneralLedger.manifest.cdm.json"
-$filePath = $DataSourcePath + "/cdm/GeneralLedger/" + $fileName
-Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
-$folderName = "data/"
-Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
-$folderName = "taxidata/cdm-model/"
-Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
-$fileName = "nyctaxidata.cdm.json"
-$filePath = $DataSourcePath + "/cdm/TaxiData/" + $fileName
-Create-FileInFolder $containerName $SyanpseDefaultADLSName $folderName $fileName $filePath
-$folderName = "taxidata/output_data/"
+
+$folderName = "gldata/"
 Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
 
-$containerName = "cdmtaxidata"
-Create-StorageContainer $containerName $SyanpseDefaultADLSName
+$folderName = "gldata/cdm-model/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
+$filePath = $DataSourcePath + "/cdm/GeneralLedger/"
+Upload-FilesFromFolder $containerName $SyanpseDefaultADLSName $folderName $filePath
+
+$folderName = "gldata/glsmalloutput/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
+
+$folderName = "taxidata/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
+
+$folderName = "taxidata/cdm-model/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
+$filePath = $DataSourcePath + "/cdm/TaxiData/"
+Upload-FilesFromFolder $containerName $SyanpseDefaultADLSName $folderName $filePath
+
+$folderName = "taxidata/nyctaxilargeoutput/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName
+
+$folderName = "taxidata/nyctaximediumoutput/"
+Create-FolderInContainer $containerName $SyanpseDefaultADLSName $folderName

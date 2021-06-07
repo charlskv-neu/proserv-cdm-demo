@@ -56,7 +56,6 @@ Function Set-ResourceGroup($resourceGroupName, $location) {
         Write-Host "Using existing resource group '$resourceGroupName'."
     }
 }
-
 Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentName, $templateFilePath, $parametersFilePath, $overridenParameters) {
     if (!(Test-Path $templateFilePath)) {        
         throw "ARM template file does not exist at path '$templateFilePath'."
@@ -87,7 +86,6 @@ Function New-ResourceManagerTemplateDeployment($resourceGroupName, $deploymentNa
         }                
     }    
 }
-
 Function New-SynapseIntegrationRuntime($workspaceName, $integrationRuntimeName, $definitionFilePath, $resourceGroupName) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -143,7 +141,6 @@ Function New-SynapseIntegrationRuntime($workspaceName, $integrationRuntimeName, 
     }
      
 }
-
 Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -178,7 +175,6 @@ Function New-SynapseLinkedService($workspaceName, $linkedServiceName, $definitio
     }
      
 }
-
 Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -212,7 +208,6 @@ Function New-SynapseDataSet($workspaceName, $dataSetName, $definitionFilePath) {
         throw $_
     }     
 }
-
 Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -245,7 +240,6 @@ Function New-SynapseDataFlow($workspaceName, $dataFlowName, $definitionFilePath)
         throw $_
     }        
 }
-
 Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath) {
     try {
         if (!(Test-Path $definitionFilePath)) {        
@@ -278,7 +272,6 @@ Function New-SynapsePipeline($workspaceName, $pipelineName, $definitionFilePath)
         throw $_
     }        
 }
-
 Function Execute-SqlScript ($serverName, $databaseName, $userName, $userPassword, $scriptFile) {
     $Error.Clear()
     SqlServer\Invoke-Sqlcmd -ServerInstance $serverName -Database $databaseName -Username "$userName" -Password "$userPassword" -InputFile $scriptFile -OutputSqlErrors $true
@@ -354,7 +347,7 @@ New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templa
 $deploymentName = "AzureSynapseSQLPoolsDeployment" + $today
 $templateFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.json"
 $parametersFilePath = "./proserv-cdm-demo-infra-code/infra/Synapse/AzureSynapseSQLPools.parameters.json"
-$sqlPoolName = "proservsqlpl" ##$SynapseWorkspaceName + "sqlpool"
+$sqlPoolName = "proservsqlpl"
 
 $overridenParameters = @{
     sqlPoolName   = $sqlPoolName
@@ -466,9 +459,9 @@ $masterDatabaseName = "master"
 $proservDatabaseName = "proservod"
 
 
-$scriptFile = $sqlScriptsBasePath + "Databases/proserv.sql"
+$scriptFile = $sqlScriptsBasePath + "Databases/proservod.sql"
 Execute-SqlScript $onDemandSqlPoolName $masterDatabaseName $adminUserName $adminPassword $scriptFile
-Write-Host "Created proserv database in on demand sql pool."
+Write-Host "Created proservod database in on demand sql pool."
 
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<masterKeyPassword>" -ParameterValue $adminPassword
 $scriptFile = $sqlScriptsBasePath + "External Resources/Credential.sql"
