@@ -453,9 +453,9 @@ New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Large";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Large.json";
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>" -ParameterValue "/$currentUTCDate/"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>" -ParameterValue "/$currentUTCDate"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
-.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>" -ParameterName "/$currentUTCDate/"
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>" -ParameterName "/$currentUTCDate"
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Medium";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Medium.json";
