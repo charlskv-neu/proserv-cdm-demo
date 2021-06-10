@@ -7,51 +7,92 @@ IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'uspDropAndCrea
 DROP PROCEDURE [dbo].[uspDropAndCreateTaxiDataTable]
 GO
 
-CREATE PROC [dbo].[uspDropAndCreateTaxiDataTable] @table_name [VARCHAR](100) AS
+CREATE PROC [dbo].[uspDropAndCreateTaxiDataTable] @CDMLocation [NVARCHAR](500),@Container [NVARCHAR](100),@StorageAcc [NVARCHAR](500),@TableName [NVARCHAR](500) AS
 BEGIN
-    -- SET NOCOUNT ON added to prevent extra result sets from
-    -- interfering with SELECT statements.
-    SET NOCOUNT ON
+	IF NOT EXISTS (select top 1 1 from sys.database_scoped_credentials where name = 'demoCred')
+	BEGIN
+		CREATE DATABASE SCOPED CREDENTIAL demoCred
+		WITH IDENTITY = 'Managed Identity';
+	END
 
-	IF EXISTS (SELECT top 1 1 FROM sys.tables WHERE name=@table_name)
+	IF NOT EXISTS (SELECT top 1 1 FROM sys.external_data_sources WHERE NAME='demoExtDS')
+	BEGIN
+		DECLARE @CreateExtDS NVARCHAR(4000) = N'CREATE EXTERNAL DATA SOURCE demoExtDS
+		WITH (
+			LOCATION = ''abfss://'+@Container+'@'+@StorageAcc+'.dfs.core.windows.net'',
+			CREDENTIAL = demoCred,
+            TYPE = HADOOP
+		);';
+		EXEC sp_executesql @tsql = @CreateExtDS;
+	END;
+
+	IF NOT EXISTS (select top 1 1 from sys.external_file_formats where name = 'parquetfileformat')
+	BEGIN
+		CREATE EXTERNAL FILE FORMAT parquetfileformat
+		WITH
+		(  
+            FORMAT_TYPE = PARQUET,
+            DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+		)
+
+	END
+
+	IF EXISTS (SELECT top 1 1 FROM sys.tables WHERE name=@TableName+'_Ext')
+	BEGIN
+		DECLARE @DropExtTbl NVARCHAR(4000) = N'DROP EXTERNAL TABLE [dbo].['+@TableName+'_Ext]';
+        EXEC sp_executesql @tsql = @DropExtTbl;
+	END
+
     BEGIN
-        DECLARE @drop_stmt NVARCHAR(200) = N'DROP TABLE dbo.' + @table_name; 
-        EXEC sp_executesql @tsql = @drop_stmt;
-		-- DROP TABLE [dbo].[nyctaxidata_large1];
+	DECLARE @CreateExtTbl NVARCHAR(4000) = N'CREATE EXTERNAL TABLE [dbo].['+@TableName+'_Ext]
+		(
+			[vendor_id] [nvarchar](4000),
+			[pickup_datetime] [nvarchar](4000),
+			[dropoff_datetime] [nvarchar](4000),
+			[store_and_foreward] [nvarchar](4000),
+			[rate_code_id] [int],
+			[pickup_longitude] [float],
+			[pickup_latitude] [float],
+			[dropoff_longitude] [float],
+			[dropoff_latitude] [float],
+			[passenger_count] [int],
+			[trip_distance] [decimal](18, 2),
+			[fare_amount] [decimal](18, 2),
+			[extra] [decimal](18, 2),
+			[mta_tax] [decimal](18, 2),
+			[tip_amount] [decimal](18, 2),
+			[tolls_amount] [decimal](18, 2),
+			[ehail_fee] [decimal](18, 2),
+			[total_amount] [decimal](18, 2),
+			[payment_type] [int],
+			[trip_type] [nvarchar](4000)
+		)
+		WITH (
+		LOCATION = '''+@CDMLocation+N''',
+		DATA_SOURCE = [demoExtDS],
+		FILE_FORMAT = [parquetfileformat]
+		);';
+		EXEC sp_executesql @tsql = @CreateExtTbl;
     END
 
-    BEGIN
-	DECLARE @create_stmt NVARCHAR(4000) = N'CREATE TABLE dbo.' + @table_name+' 
-    (
-		[vendor_id] [nvarchar](4000) NULL,
-		[pickup_datetime] [nvarchar](4000) NULL,
-		[dropoff_datetime] [nvarchar](4000) NULL,
-		[store_and_foreward] [nvarchar](4000) NULL,
-		[rate_code_id] [int] NULL,
-		[pickup_longitude] [float] NULL,
-		[pickup_latitude] [float] NULL,
-		[dropoff_longitude] [float] NULL,
-		[dropoff_latitude] [float] NULL,
-		[passenger_count] [int] NULL,
-		[trip_distance] [decimal](18, 2) NULL,
-		[fare_amount] [decimal](18, 2) NULL,
-		[extra] [decimal](18, 2) NULL,
-		[mta_tax] [decimal](18, 2) NULL,
-		[tip_amount] [decimal](18, 2) NULL,
-		[tolls_amount] [decimal](18, 2) NULL,
-		[ehail_fee] [decimal](18, 2) NULL,
-		[total_amount] [decimal](18, 2) NULL,
-		[payment_type] [int] NULL,
-		[trip_type] [nvarchar](4000) NULL
-	)
-	WITH
-	(
-		DISTRIBUTION = ROUND_ROBIN,
-		CLUSTERED COLUMNSTORE INDEX
-	)';
-
-	EXEC sp_executesql @tsql = @create_stmt;
-	
+    IF EXISTS (SELECT top 1 1 FROM sys.tables WHERE name=@TableName)
+	BEGIN
+		DECLARE @DropTbl NVARCHAR(4000) = N'DROP TABLE [dbo].['+@TableName+']';
+        EXEC sp_executesql @tsql = @DropTbl;
 	END
+
+    BEGIN
+        DECLARE @CreateTbl NVARCHAR(4000) = N'CREATE TABLE [dbo].['+@TableName+']
+        WITH
+        (
+            DISTRIBUTION = ROUND_ROBIN,
+            HEAP
+        )
+        AS
+        SELECT *
+          FROM [dbo].['+@TableName+'_Ext];';
+
+        EXEC sp_executesql @tsql = @CreateTbl;
+    END
 END
 GO

@@ -453,14 +453,18 @@ New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Large";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Large.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SyanpseDefaultADLSName>" -ParameterValue "$SyanpseDefaultADLSName"
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>" -ParameterValue "/$currentUTCDate"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SyanpseDefaultADLSName>" -ParameterName "$SyanpseDefaultADLSName"
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>" -ParameterName "/$currentUTCDate"
 
 $pipelineName = "NYTaxiCDMtoSQLPool_Medium";
 $definitionFilePath = $artifactsBasePath + "pipeline/NYTaxiCDMtoSQLPool_Medium.json";
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "<SyanpseDefaultADLSName>" -ParameterValue "$SyanpseDefaultADLSName"
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterName "/<currentUTCDate>" -ParameterValue "/$currentUTCDate"
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
+.\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SyanpseDefaultADLSName>" -ParameterName "$SyanpseDefaultADLSName"
 .\proserv-cdm-demo-infra-code\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "/<currentUTCDate>" -ParameterName "/$currentUTCDate"
 
 ## Create database objects in sql pool
@@ -494,6 +498,9 @@ Write-Host "Created stored procedure usp_NycTaxi_External_Table in $proservDatab
 $scriptFile = $sqlScriptsBasePath + "Stored Procedures/uspDropAndCreateTaxiDataTable.sql"
 Execute-SqlScript $dedicatedSqlPoolName $sqlPoolName $adminUserName $adminPassword $scriptFile
 Write-Host "Created stored procedure uspDropAndCreateTaxiDataTable in $sqlPoolName database in dedicated sql pool."
+$scriptFile = $sqlScriptsBasePath + "Stored Procedures/uspCreateTaxiAggregateTable.sql"
+Execute-SqlScript $dedicatedSqlPoolName $sqlPoolName $adminUserName $adminPassword $scriptFile
+Write-Host "Created stored procedure uspCreateTaxiAggregateTable in $sqlPoolName database in dedicated sql pool."
 
 $Stopwatch.Stop()
 Write-Host "Total Execution Time : "$Stopwatch.Elapsed  -ForegroundColor DarkGray
