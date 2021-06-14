@@ -27,23 +27,27 @@ Before you get started, copy and paste below variables in a text editor for late
 2. On your computer, enter **PowerShell** in the search box on the Windows taskbar. In the search list, right-click **Windows PowerShell**, and then select **Run as administrator**.
 
 
-3. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-setup-script with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
+3. Use the following command to navigate to the directory where the setup script is residing in the Powershell IDE. Replace path-to-starter-kit with the folder path of the extracted Setup-ProServ-Demo-Environment.ps1 file.
 
-	cd "path-to-setup-kit"
+	```powershell
+	cd <path-to-starter-kit>
+	dir -Path <path-to-starter-kit> -Recurse | Unblock-File
+	```
 
 4. Use the following command to run the setup kit. 
 
-	- Use the following command to run the starter kit. Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders
+	- Replace the TenantID, SubscriptionID, ResourceGroupName, SynapseWorkspaceName and SyanpseDefaultADLSName placeholders using the data collected earlier.
 	
-		```powershell
-		.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID>
-		-SubscriptionId <SubscriptionId>
-		-ResourceGroupName <ResourceGroupName>
-		-SynapseWorkspaceName <SynapseWorkspaceName>
-		-SyanpseDefaultADLSName <SyanpseDefaultADLSName>
+	```powershell
+	.\Setup-ProServ-Demo-Environment.ps1 -TenantId <TenantID> -SubscriptionId <SubscriptionId> -ResourceGroupName <ResourceGroupName> -SynapseWorkspaceName <SynapseWorkspaceName> -SyanpseDefaultADLSName <SyanpseDefaultADLSName>
+	```
 	
 	- Complete the Azure login when prompted
 	
 5. Once the deployment is complete, verify the synapse and storage account are created. Also, confirm if the Synapse artifacts are deployed too.
+
+## Share and Recieve data using Azure Data Share for demo
+
+- Refer this [tutorial](https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
 
 ***
