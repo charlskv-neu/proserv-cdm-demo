@@ -1,0 +1,67 @@
+{
+    "name": "NYTaxiCDMtoSQLonDemand_Medium",
+    "properties": {
+        "activities": [
+            {
+                "name": "Create NycTaxiExternalTable",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "storedProcedureName": "[dbo].[usp_NycTaxi_External_Table]",
+                    "storedProcedureParameters": {
+                        "CDMLocation": {
+                            "value": {
+                                "value": "@pipeline().parameters.CDM_Folder_Path",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "Container": {
+                            "value": {
+                                "value": "@pipeline().parameters.CDM_Container",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        },
+                        "StorageAcc": {
+                            "value": {
+                                "value": "@pipeline().parameters.StorageAccount",
+                                "type": "Expression"
+                            },
+                            "type": "String"
+                        }
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "SQLOnDemand",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "parameters": {
+            "StorageAccount": {
+                "type": "string",
+                "defaultValue": "<SyanpseDefaultADLSName>"
+            },
+            "CDM_Container": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "CDM_Folder_Path": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaximediumoutput/nyctaxidata/<currentUTCDate>/"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-07T12:45:25Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

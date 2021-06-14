@@ -1,0 +1,27 @@
+{
+  "defaultNamespace": "idw",
+  "adapters": [
+    {
+      "type": "adls",
+      "config": {
+        "hostname": "neuproservsa.dfs.core.windows.net",
+        "root": "/models/taxidata/cdm-model",
+        "timeout": 600000.0,
+        "maximumTimeout": 60000.0,
+        "numberOfRetries": 3
+      },
+      "namespace": "adls"
+    },
+    {
+      "type": "adls",
+      "config": {
+        "hostname": "builtinmodels.dfs.core.windows.net",
+        "root": "/data/ConsumerGoods",
+        "timeout": 600000.0,
+        "maximumTimeout": 60000.0,
+        "numberOfRetries": 3
+      },
+      "namespace": "idw"
+    }
+  ]
+}
