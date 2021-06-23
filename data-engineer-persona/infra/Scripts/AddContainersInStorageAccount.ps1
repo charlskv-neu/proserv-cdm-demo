@@ -18,16 +18,16 @@ $storageAccount = az storage account show --resource-group $ResourceGroupName --
 $storageAccount = az storage account show --resource-group $ResourceGroupName --name $AmericasADLSName --only-show-errors
 $storageAccount = az storage account show --resource-group $ResourceGroupName --name $ApacADLSName --only-show-errors
 
-Function Create-StorageContainer($containerName, $SynapseDefaultADLSName)
+Function Create-StorageContainer($containerName, $ADLSName)
 {
-    $container = az storage container show --name $containerName --account-name $SynapseDefaultADLSName --only-show-errors
+    $container = az storage container show --name $containerName --account-name $ADLSName --only-show-errors
     if($container)  
     {  
         Write-Host "$containerName - container already exists."
     }  
     else  
     { 
-        az storage container create --name $containerName --account-name $SynapseDefaultADLSName --public-access off --only-show-errors --output none
+        az storage container create --name $containerName --account-name $ADLSName --public-access off --only-show-errors --output none
         if (!$?) {
             throw "An error occurred while creating container."
         }
@@ -36,16 +36,16 @@ Function Create-StorageContainer($containerName, $SynapseDefaultADLSName)
         }        
     }
 }
-Function Create-FolderInContainer($containerName, $SynapseDefaultADLSName, $folderName)
+Function Create-FolderInContainer($containerName, $ADLSName, $folderName)
 {
-    $folder = az storage fs directory show --file-system $containerName --name $folderName --account-name $SynapseDefaultADLSName --only-show-errors
+    $folder = az storage fs directory show --file-system $containerName --name $folderName --account-name $ADLSName --only-show-errors
     if($folder)  
     {  
         Write-Host "$folderName - folder already exists."
     }  
     else  
     {              
-        az storage fs directory create --account-name $SynapseDefaultADLSName --file-system $containerName --name $folderName --only-show-errors --output none
+        az storage fs directory create --account-name $ADLSName --file-system $containerName --name $folderName --only-show-errors --output none
         if (!$?) {
             throw "An error occurred while creating folder."
         }
@@ -54,17 +54,17 @@ Function Create-FolderInContainer($containerName, $SynapseDefaultADLSName, $fold
         }        
     }
 }
-Function Create-FileInFolder($containerName, $SynapseDefaultADLSName, $folderName, $fileName, $filePath)
+Function Create-FileInFolder($containerName, $ADLSName, $folderName, $fileName, $filePath)
 {
     $finalPath = $folderName + $fileName
-    $file = az storage fs file show --file-system $containerName --path $finalPath --account-name $SynapseDefaultADLSName --only-show-errors
+    $file = az storage fs file show --file-system $containerName --path $finalPath --account-name $ADLSName --only-show-errors
     if($file)  
     {  
         Write-Host "$fileName - file already exists."
     }  
     else  
     {              
-        az storage fs file upload --account-name $SynapseDefaultADLSName --file-system $containerName --path $finalPath --source $filePath --only-show-errors --output none
+        az storage fs file upload --account-name $ADLSName --file-system $containerName --path $finalPath --source $filePath --only-show-errors --output none
         if (!$?) {
             throw "An error occurred while creating file."
         }
@@ -73,13 +73,13 @@ Function Create-FileInFolder($containerName, $SynapseDefaultADLSName, $folderNam
         }        
     }
 }
-Function Upload-FilesFromFolder($containerName, $SynapseDefaultADLSName, $folderName, $folderPath)
+Function Upload-FilesFromFolder($containerName, $ADLSName, $folderName, $folderPath)
 {
     $filesToUpload = Get-ChildItem -Path $folderPath
     for ($i=0; $i -lt $filesToUpload.Count; $i++) {
         $fileName = $filesToUpload[$i].Name
         $filePath = $folderPath +$fileName
-        Create-FileInFolder $containerName $SynapseDefaultADLSName $folderName $fileName $filePath
+        Create-FileInFolder $containerName $ADLSName $folderName $fileName $filePath
     }
 }
 

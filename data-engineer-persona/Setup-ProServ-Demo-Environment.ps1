@@ -11,7 +11,11 @@
     .PARAMETER SynapseWorkspaceName
         Name to use for Azure Synapse Workspace
     .PARAMETER SynapseDefaultADLSName
-        Name to use for ADLS account associated with Synpase Workspace    
+        Name to use for ADLS account associated with Synpase Workspace   
+    .PARAMETER AmericasADLSName
+        Name to use for ADLS account in Americas region
+    .PARAMETER ApacADLSName
+        Name to use for ADLS account in APAC Region   		
 #>
 
 param(
@@ -395,7 +399,7 @@ $overridenParameters = @{
 New-ResourceManagerTemplateDeployment $ResourceGroupName $deploymentName $templateFilePath $parametersFilePath $overridenParameters
 
 ## Add folders in ADLS
-.\infra\Scripts\AddContainersInStorageAccount.ps1 -ResourceGroupName $ResourceGroupName -SynapseDefaultADLSName $SynapseDefaultADLSName -AmericasADLSName -$AmericasADLSName -ApacADLSName $ApacADLSName -SynapseDefaultADLSFileSystemName $defaultDataLakeStorageFilesystemName -DataSourcePath "./infra"
+.\infra\Scripts\AddContainersInStorageAccount.ps1 -ResourceGroupName $ResourceGroupName -SynapseDefaultADLSName $SynapseDefaultADLSName -AmericasADLSName $AmericasADLSName -ApacADLSName $ApacADLSName -SynapseDefaultADLSFileSystemName $defaultDataLakeStorageFilesystemName -DataSourcePath "./infra"
 
 ## Deploy Azure Synapse Artifacts
 $artifactsBasePath = "./WorkspaceTemplates/";
