@@ -1,0 +1,49 @@
+{
+    "name": "DynamicsGeneralJournalExcel",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "ADLS_ProServ_APAC",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "FileSystem": {
+                "type": "string"
+            },
+            "FileName": {
+                "type": "string"
+            },
+            "SheetName": {
+                "type": "string"
+            },
+            "FileDirectory": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": {
+                "value": "@dataset().SheetName",
+                "type": "Expression"
+            },
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().FileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().FileDirectory",
+                    "type": "Expression"
+                },
+                "fileSystem": {
+                    "value": "@dataset().FileSystem",
+                    "type": "Expression"
+                }
+            },
+            "firstRowAsHeader": true
+        },
+        "schema": []
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

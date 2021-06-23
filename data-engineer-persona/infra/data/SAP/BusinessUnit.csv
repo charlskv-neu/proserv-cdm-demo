@@ -1,0 +1,121 @@
+BusinessUnitKey,Name,Category,SubCategory
+0,Unit 0,Marketing,SocialMedia
+1,Unit 1,Sales,Retail
+2,Unit 2,R&D,New Product Development
+3,Unit 3,Sales,Online
+4,Unit 4,R&D,New Product Development
+5,Unit 5,IT,QA
+6,Unit 6,Sales ,Partner
+7,Unit 7,Operations ,Finance
+8,Unit 8,Marketing,Creative
+9,Unit 9,IT,Engineering
+10,Unit 10,Operations ,Procurement
+11,Unit 11,Sales,Online
+12,Unit 12,Marketing,Creative
+13,Unit 13,R&D,New Product Development
+14,Unit 14,Operations ,Finance
+15,Unit 15,Sales,Online
+16,Unit 16,R&D,New Product Development
+17,Unit 17,IT,UX
+18,Unit 18,R&D,New Product Development
+19,Unit 19,Sales,Online
+20,Unit 20,IT,Engineering
+21,Unit 21,IT,UX
+22,Unit 22,Marketing,SocialMedia
+23,Unit 23,IT,Engineering
+24,Unit 24,IT,UX
+25,Unit 25,Marketing,SocialMedia
+26,Unit 26,Marketing,Creative
+27,Unit 27,IT,Program Management
+28,Unit 28,Marketing,Creative
+29,Unit 29,Operations ,Finance
+30,Unit 30,IT,Engineering
+31,Unit 31,Operations ,Procurement
+32,Unit 32,Sales,Online
+33,Unit 33,Operations ,Finance
+34,Unit 34,Sales ,Partner
+35,Unit 35,R&D,New Product Development
+36,Unit 36,Marketing,Creative
+37,Unit 37,Sales,Online
+38,Unit 38,IT,QA
+39,Unit 39,IT,QA
+40,Unit 40,R&D,Continuous Improvement
+41,Unit 41,Marketing,SocialMedia
+42,Unit 42,R&D,Emerging Tech
+43,Unit 43,R&D,Emerging Tech
+44,Unit 44,Operations ,Procurement
+45,Unit 45,Marketing,Creative
+46,Unit 46,Sales ,Partner
+47,Unit 47,IT,Program Management
+48,Unit 48,Sales ,Partner
+49,Unit 49,Marketing,Creative
+50,Unit 50,Marketing,Creative
+51,Unit 51,R&D,Continuous Improvement
+52,Unit 52,Operations ,Procurement
+53,Unit 53,Marketing,Creative
+54,Unit 54,Marketing,Creative
+55,Unit 55,Marketing,Creative
+56,Unit 56,IT,Engineering
+57,Unit 57,R&D,Continuous Improvement
+58,Unit 58,Sales ,Partner
+59,Unit 59,Marketing,SocialMedia
+60,Unit 60,Marketing,Creative
+61,Unit 61,IT,UX
+62,Unit 62,R&D,New Product Development
+63,Unit 63,Operations ,HR
+64,Unit 64,R&D,Continuous Improvement
+65,Unit 65,Marketing,SocialMedia
+66,Unit 66,IT,UX
+67,Unit 67,IT,Program Management
+68,Unit 68,IT,Engineering
+69,Unit 69,R&D,Continuous Improvement
+70,Unit 70,Marketing,SocialMedia
+71,Unit 71,Operations ,Procurement
+72,Unit 72,R&D,New Product Development
+73,Unit 73,Operations ,Finance
+74,Unit 74,R&D,Continuous Improvement
+75,Unit 75,IT,UX
+76,Unit 76,Marketing,SocialMedia
+77,Unit 77,Sales,Online
+78,Unit 78,R&D,Emerging Tech
+79,Unit 79,Operations ,Procurement
+80,Unit 80,Marketing,Creative
+81,Unit 81,R&D,New Product Development
+82,Unit 82,Operations ,Finance
+83,Unit 83,Sales,Retail
+84,Unit 84,IT,QA
+85,Unit 85,Operations ,Finance
+86,Unit 86,Marketing,SocialMedia
+87,Unit 87,R&D,New Product Development
+88,Unit 88,R&D,Emerging Tech
+89,Unit 89,IT,UX
+90,Unit 90,Sales ,Partner
+91,Unit 91,Operations ,Finance
+92,Unit 92,Sales ,Partner
+93,Unit 93,IT,Engineering
+94,Unit 94,IT,Engineering
+95,Unit 95,IT,Engineering
+96,Unit 96,R&D,Continuous Improvement
+97,Unit 97,Operations ,Finance
+98,Unit 98,Sales ,Partner
+99,Unit 99,Operations ,HR
+100,Unit 100,Marketing,SocialMedia
+101,Unit 101,Sales,Retail
+102,Unit 102,Operations ,Procurement
+103,Unit 103,IT,Engineering
+104,Unit 104,IT,Engineering
+105,Unit 105,R&D,Emerging Tech
+106,Unit 106,Marketing,Creative
+107,Unit 107,Sales ,Partner
+108,Unit 108,IT,Program Management
+109,Unit 109,IT,QA
+110,Unit 110,Marketing,Creative
+111,Unit 111,Sales,Online
+112,Unit 112,R&D,New Product Development
+113,Unit 113,Operations ,Finance
+114,Unit 114,R&D,Continuous Improvement
+115,Unit 115,IT,Program Management
+116,Unit 116,R&D,Emerging Tech
+117,Unit 117,Operations ,Finance
+118,Unit 118,IT,Program Management
+119,Unit 119,R&D,Emerging Tech

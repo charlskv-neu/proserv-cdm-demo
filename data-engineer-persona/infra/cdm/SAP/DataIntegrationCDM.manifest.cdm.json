@@ -1,0 +1,226 @@
+{
+  "manifestName": "DataIntegrationCDM.manifest.cdm.json",
+  "entities": [
+    {
+      "entityName": "Customer",
+      "entityPath": "Customer.cdm.json/Customer",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Individual Customer"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting,Budget & Forecasting,Channel,Contract,Customer Account,Customer Service & Contact Management,Document Management,Individual Customer,Individual Customer Credit & Collections,Inventory,Legal Entity Customer,Legal Entity Customer Credit & Collections,Loyalty,Marketing & Advertising,Product,Purchasing,Shipping,Transaction"
+          ],
+          "traitReference": "is.from.businessArea"
+        },
+        {
+          "arguments": [
+            "Retail"
+          ],
+          "traitReference": "is.from.enterprise"
+        }
+      ]
+    },
+    {
+      "entityName": "Invoice",
+      "entityPath": "Invoice.cdm.json/Invoice",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Order"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting,Purchasing"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    },
+    {
+      "entityName": "InvoiceLine",
+      "entityPath": "InvoiceLine.cdm.json/InvoiceLine",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Order"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Purchasing"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    },
+    {
+      "entityName": "Journal",
+      "entityPath": "Journal.cdm.json/Journal",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Accounting & Financial Reporting"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    },
+    {
+      "entityName": "JournalEntry",
+      "entityPath": "JournalEntry.cdm.json/JournalEntry",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Accounting & Financial Reporting"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    },
+    {
+      "entityName": "LedgerAccount",
+      "entityPath": "LedgerAccount.cdm.json/LedgerAccount",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Accounting & Financial Reporting"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting,Budget & Forecasting,Inventory,Purchasing"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    },
+    {
+      "entityName": "Party",
+      "entityPath": "Party.cdm.json/Party",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Party"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting,Budget & Forecasting,Business Metrics,Channel,Contract,Customer Account,Customer Service & Contact Management,Document Management,Encounter & Claim,Geography,Human Resources & Payroll,Individual Customer,Individual Customer Credit & Collections,Inventory,Legal Entity Customer,Legal Entity Customer Credit & Collections,Loyalty,Manufacturing (Continuous),Marketing & Advertising,Party,Product,Property & Equipment,Purchasing,Shipping,Training & Education,Transaction,Vendor"
+          ],
+          "traitReference": "is.from.businessArea"
+        },
+        {
+          "arguments": [
+            "Retail"
+          ],
+          "traitReference": "is.from.enterprise"
+        }
+      ]
+    },
+    {
+      "entityName": "Project",
+      "entityPath": "Project.cdm.json/Project",
+      "type": "LocalEntity",
+      "exhibitTraits": [
+        {
+          "arguments": [
+            "Project Management"
+          ],
+          "traitReference": "is.nativeTo.businessArea"
+        },
+        {
+          "arguments": [
+            "Accounting & Financial Reporting,Property & Equipment"
+          ],
+          "traitReference": "is.from.businessArea"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromEntity": "Customer.cdm.json/Customer",
+      "fromEntityAttribute": "LedgerId",
+      "toEntity": "LedgerAccount.cdm.json/LedgerAccount",
+      "toEntityAttribute": "LedgerId",
+      "name": "LedgerAccount_Customer_f840f536e439a47cfed52d8fe7bed8a0"
+    },
+    {
+      "fromEntity": "Customer.cdm.json/Customer",
+      "fromEntityAttribute": "LedgerAccountNumber",
+      "toEntity": "LedgerAccount.cdm.json/LedgerAccount",
+      "toEntityAttribute": "LedgerAccountNumber",
+      "name": "LedgerAccount_Customer_f840f536e439a47cfed52d8fe7bed8a0"
+    },
+    {
+      "fromEntity": "Customer.cdm.json/Customer",
+      "fromEntityAttribute": "PartyId",
+      "toEntity": "Party.cdm.json/Party",
+      "toEntityAttribute": "PartyId"
+    },
+    {
+      "fromEntity": "Invoice.cdm.json/Invoice",
+      "fromEntityAttribute": "InvoiceToPartyId",
+      "toEntity": "Party.cdm.json/Party",
+      "toEntityAttribute": "PartyId"
+    },
+    {
+      "fromEntity": "InvoiceLine.cdm.json/InvoiceLine",
+      "fromEntityAttribute": "InvoiceId",
+      "toEntity": "Invoice.cdm.json/Invoice",
+      "toEntityAttribute": "InvoiceId"
+    },
+    {
+      "fromEntity": "JournalEntry.cdm.json/JournalEntry",
+      "fromEntityAttribute": "JournalId",
+      "toEntity": "Journal.cdm.json/Journal",
+      "toEntityAttribute": "JournalId"
+    },
+    {
+      "fromEntity": "LedgerAccount.cdm.json/LedgerAccount",
+      "fromEntityAttribute": "CustomerId",
+      "toEntity": "Customer.cdm.json/Customer",
+      "toEntityAttribute": "CustomerId"
+    },
+    {
+      "fromEntity": "LedgerAccount.cdm.json/LedgerAccount",
+      "fromEntityAttribute": "ProjectId",
+      "toEntity": "Project.cdm.json/Project",
+      "toEntityAttribute": "ProjectId"
+    }
+  ],
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "schema": "",
+  "imports": [],
+  "explanation": "",
+  "subManifests": []
+}

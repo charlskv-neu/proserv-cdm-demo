@@ -1,0 +1,44 @@
+{
+    "name": "DataSet_ADLG2_CSV",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureDataLakeStorageDemo",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "DataSetprm_FileContainer": {
+                "type": "string"
+            },
+            "DataSetprm_FileDirectory": {
+                "type": "string"
+            },
+            "DataSetprm_FileName": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().DataSetprm_FileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().DataSetprm_FileDirectory",
+                    "type": "Expression"
+                },
+                "fileSystem": {
+                    "value": "@dataset().DataSetprm_FileContainer",
+                    "type": "Expression"
+                }
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": []
+    }
+}

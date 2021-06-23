@@ -1,0 +1,132 @@
+{
+    "name": "GeneralLedger_CDM_Small",
+    "properties": {
+        "activities": [
+            {
+                "name": "DynamicsGLtoCDM_Mapping",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "DynamicsGL_CDM",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "CorpusContainer": {
+                                "value": "'@{pipeline().parameters.CorpusContainer}'",
+                                "type": "Expression"
+                            },
+                            "CorpusFolder": {
+                                "value": "'@{pipeline().parameters.CorpusFolder}'",
+                                "type": "Expression"
+                            },
+                            "RootContainer": {
+                                "value": "'@{pipeline().parameters.RootContainer}'",
+                                "type": "Expression"
+                            },
+                            "RootFolder": {
+                                "value": "'@{pipeline().parameters.RootFolder}'",
+                                "type": "Expression"
+                            },
+                            "Entity": {
+                                "value": "'@{pipeline().parameters.Entity}'",
+                                "type": "Expression"
+                            },
+                            "ManifestEntityPath": {
+                                "value": "'@{pipeline().parameters.ManifestEntityPath}'",
+                                "type": "Expression"
+                            },
+                            "ManifestName": {
+                                "value": "'@{pipeline().parameters.ManifestName}'",
+                                "type": "Expression"
+                            }
+                        },
+                        "datasetParameters": {
+                            "source1": {
+                                "FileSystem": {
+                                    "value": "@pipeline().parameters.FileSystem",
+                                    "type": "Expression"
+                                },
+                                "FileName": {
+                                    "value": "@pipeline().parameters.FileName",
+                                    "type": "Expression"
+                                },
+                                "SheetName": {
+                                    "value": "@pipeline().parameters.SheetName",
+                                    "type": "Expression"
+                                },
+                                "FileDirectory": {
+                                    "value": "@pipeline().parameters.FileDirectory",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "None",
+                    "cacheSinks": {
+                        "firstRowOnly": true
+                    }
+                }
+            }
+        ],
+        "parameters": {
+            "FileSystem": {
+                "type": "string",
+                "defaultValue": "contoso"
+            },
+            "FileName": {
+                "type": "string",
+                "defaultValue": "General Journal.xlsx"
+            },
+            "CorpusContainer": {
+                "type": "string",
+                "defaultValue": "contoso"
+            },
+            "CorpusFolder": {
+                "type": "string",
+                "defaultValue": "contoso-dynamics/general-ledger/config/cdm-model"
+            },
+            "RootContainer": {
+                "type": "string",
+                "defaultValue": "contoso"
+            },
+            "RootFolder": {
+                "type": "string",
+                "defaultValue": "contoso-dynamics/general-ledger/output/cdm"
+            },
+            "Entity": {
+                "type": "string",
+                "defaultValue": "GeneralJournal.cdm.json/GeneralJournal"
+            },
+            "ManifestEntityPath": {
+                "type": "string"
+            },
+            "ManifestName": {
+                "type": "string",
+                "defaultValue": "GeneralLedger"
+            },
+            "SheetName": {
+                "type": "string",
+                "defaultValue": "General_journal"
+            },
+            "FileDirectory": {
+                "type": "string",
+                "defaultValue": "contoso-dynamics/general-ledger/source"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-09T19:14:40Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

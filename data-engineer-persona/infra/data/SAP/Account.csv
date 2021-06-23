@@ -1,0 +1,73 @@
+AccountKey,Code,Name,Type,SubType
+0,1110,Cash,Assets,Current Assets
+1,1120,Receivables,Assets,Current Assets
+2,1130,Trade Receivables,Assets,Current Assets
+3,1140,Other Receivables,Assets,Current Assets
+4,1150,Allowance for Bad Debt,Assets,Current Assets
+5,1160,Inventory,Assets,Current Assets
+6,1162,Raw Materials,Assets,Current Assets
+7,1164,Wire Transfer,Assets,Current Assets
+8,1166,Finished Goods,Assets,Current Assets
+9,1170,Deferred Taxes,Assets,Current Assets
+10,1180,Prepaid Expenses,Assets,Current Assets
+11,1185,Intercompany Receivables,Assets,Current Assets
+12,1200,"Property, Plant, Equipment",Assets,Current Assets
+13,1210,Land & Improvements,Assets,Current Assets
+14,1220,Buildings & Improvements,Assets,Current Assets
+15,1230,Machinery & Equipment,Assets,Current Assets
+16,1240,Office Furniture & Equipment,Assets,Current Assets
+17,1250,Leasehold Improvements,Assets,Current Assets
+18,1260,Construction In Progress,Assets,Current Assets
+19,1300,Other Assets,Assets,Other Assets
+20,20,Liabilities and Owners Equity,Liabilities,
+21,210,Liabilities,Liabilities,
+22,2200,Current Liabilities,Liabilities,
+23,2210,Notes Payable,Liabilities,Current Liabilities
+24,2230,Accounts Payable,Liabilities,Current Liabilities
+25,2300,Accrued Expenses,Liabilities,Current Liabilities
+26,2310,Salary & Other Comp,Liabilities,Current Liabilities
+27,2320,Insurance,Liabilities,Current Liabilities
+28,2330,Warranties,Liabilities,Current Liabilities
+29,2340,Intercompany Payables,Liabilities,Current Liabilities
+30,2350,Other Current Liabilities,Liabilities,Current Liabilities
+31,2400,Long Term Liabilities,Liabilities,Current Liabilities
+32,2410,Long Term Obligations,Liabilities,Current Liabilities
+33,2420,Pension Liability,Liabilities,Current Liabilities
+34,2430,Other Retirement Benefits,Liabilities,Current Liabilities
+35,2440,Other Long Term Liabilities,Liabilities,Current Liabilities
+36,3010,Partner Capital,Liabilities,Equity
+37,3020,Additional Paid In Capital,Liabilities,Equity
+38,3030,Retained Earnings,Liabilities,Equity
+39,4110,Gross Sales,Revenue,Revenue
+40,4500,Intercompany Sales,Revenue,Revenue
+41,4130,Returns and Adjustments,Revenue,Revenue
+42,4140,Discounts,Revenue,Revenue
+43,6000,Salaries,Expenses,Labor Expenses
+44,6020,Payroll Taxes,Expenses,Labor Expenses
+45,6040,Employee Benefits,Expenses,Labor Expenses
+46,6100,Commissions,Expenses,Labor Expenses
+47,6200,Travel Transportation,Expenses,Travel Expenses
+48,6210,Travel Lodging,Expenses,Travel Expenses
+49,6220,Meals,Expenses,Travel Expenses
+50,6230,Entertainment,Expenses,Travel Expenses
+51,6240,Other Travel Related,Expenses,Travel Expenses
+52,6300,Conferences,Expenses,Marketing
+53,6310,Marketing Collateral,Expenses,Marketing
+54,6400,Office Supplies,Expenses,Marketing
+55,6500,Professional Services,Expenses,Marketing
+56,6610,Internet,Expenses,Utilities
+57,6620,Utilities,Expenses,Utilities
+58,6700,Other Expenses,Expenses,Other Expenses
+59,6810,Building Leasehold,Expenses,Depreciation
+60,6820,Vehicles,Expenses,Depreciation
+61,6830,Equipment,Expenses,Depreciation
+62,6840,Furniture and Fixtures,Expenses,Depreciation
+63,6850,Other Assets,Expenses,Depreciation
+64,6860,Amortization of Goodwill,Expenses,Depreciation
+65,6920,Rent,Expenses,Rent
+66,8000,Interest Income,Revenue,Other Income and Expense
+67,8010,Interest Expense,Revenue,Other Income and Expense
+68,8020,Gain/Loss on Sales of Asset,Revenue,Other Income and Expense
+69,8030,Other Income,Revenue,Other Income and Expense
+70,8040,Curr Xchg Gain/(Loss),Revenue,Other Income and Expense
+71,8500,Taxes,Expenses,Taxes

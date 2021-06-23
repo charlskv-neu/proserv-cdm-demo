@@ -1,0 +1,58 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "Journal",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "JournalId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Journal ID",
+          "description": "The unique identifier of a Journal."
+        },
+        {
+          "name": "JournalName",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Journal Name",
+          "description": "The name of the journal.",
+          "maximumLength": 128
+        },
+        {
+          "name": "LegalEntityId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Legal Entity ID",
+          "description": "The unique identifier of a Legal Entity."
+        },
+        {
+          "name": "SpecialJournalIndicator",
+          "purpose": "hasA",
+          "dataType": "boolean",
+          "isNullable": true,
+          "displayName": "Special Journal Indicator",
+          "description": "Special journals divide the labor required.    They are books of original entry (journals) that are specifically designed for the purpose of recording similar transactions.\n\nSpecial journals take the place of the general journal.\n\nThis is primarily a result of the volume of transactions that are recorded by the business.   A large volume of transaction may require that special journals be defined so that work can be segmented among staff to address the special/volume requirements."
+        },
+        {
+          "name": "JournalTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Journal Type ID",
+          "description": "The unique identifier of a Journal Type."
+        }
+      ],
+      "displayName": "Journal",
+      "description": "The journal or 'day book' is the book of 'original entry' for accounting data.  \n\nData is subsequently transferred or posted to the ledger from the journal as the book of 'subsequent or secondary entry'.\n\nThere are different journals that may be used by a business that can be categorized as either:\n\n1.  The general journal\n2.  Specialized journal(s)\n\nSpecialized journals are used where there is a large number of repetitive transactions or function-specific transactions.\n\nThe entry of a transaction into a journal is the starting point for its record within the financial accounting system.\n\nThe journal entry represents a chronological record of the transaction with the date of the transaction, and explanation of the transaction, the accounts affected and the amounts affected within each account.\n\nThe net amount of any journal entry will be zero so it's application to a specific journal entry is applied as a debit or credit."
+    }
+  ]
+}

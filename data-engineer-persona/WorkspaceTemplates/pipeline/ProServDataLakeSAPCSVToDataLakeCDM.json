@@ -1,0 +1,126 @@
+{
+    "name": "ProServDataLakeSAPCSVToDataLakeCDM",
+    "properties": {
+        "description": "Picks up a source CSV file from SAP, and sinks it into the CDM Target Entity.",
+        "activities": [
+            {
+                "name": "DataLakeSAPCSVToDataLakeCDM",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "1.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "DF_ProServ_DataLakeSAPCSV_to_DataLakeCDM",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "DFPrmCorpusFolderContainer": {
+                                "value": "'@{pipeline().parameters.PLPrmCorpusFolderContainer}'",
+                                "type": "Expression"
+                            },
+                            "DFPrmCorpusFolderFolder": {
+                                "value": "'@{pipeline().parameters.PLPrmCorpusFolderFolder}'",
+                                "type": "Expression"
+                            },
+                            "DFPrmRootLocationContainer": {
+                                "value": "'@{pipeline().parameters.PLPrmRootLocationContainer}'",
+                                "type": "Expression"
+                            }
+                        },
+                        "datasetParameters": {
+                            "DataLakeCSVFact": {
+                                "DataSetprm_FileContainer": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileContainer",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileDirectory": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileDirectory",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileName": "Fact.csv"
+                            },
+                            "DataLakeCSVBusinessUnit": {
+                                "DataSetprm_FileContainer": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileContainer",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileDirectory": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileDirectory",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileName": "BusinessUnit.csv"
+                            },
+                            "DataLakeCSVJournal": {
+                                "DataSetprm_FileContainer": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileContainer",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileDirectory": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileDirectory",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileName": "Journal.csv"
+                            },
+                            "DataLakeCSVProject": {
+                                "DataSetprm_FileContainer": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileContainer",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileDirectory": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileDirectory",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileName": "Customer.csv"
+                            },
+                            "DataLakeCSVCustomer": {
+                                "DataSetprm_FileContainer": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileContainer",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileDirectory": {
+                                    "value": "@pipeline().parameters.PLPrmDataSetFileDirectory",
+                                    "type": "Expression"
+                                },
+                                "DataSetprm_FileName": "Customer.csv"
+                            }
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            }
+        ],
+        "parameters": {
+            "PLPrmDataSetFileContainer": {
+                "type": "string",
+                "defaultValue": "cdmproservdataintegration"
+            },
+            "PLPrmDataSetFileDirectory": {
+                "type": "string",
+                "defaultValue": "RAW/SAP"
+            },
+            "PLPrmCorpusFolderContainer": {
+                "type": "string",
+                "defaultValue": "cdmproservdataintegration"
+            },
+            "PLPrmCorpusFolderFolder": {
+                "type": "string",
+                "defaultValue": "CDM"
+            },
+            "PLPrmRootLocationContainer": {
+                "type": "string",
+                "defaultValue": "cdmproservdataintegration"
+            }
+        },
+        "annotations": []
+    }
+}

@@ -1,0 +1,155 @@
+{
+    "name": "DF_ProServ_DataLakeSAPCSV_to_DataLakeCDM",
+    "properties": {
+        "description": "Move SAP CSV extract data from Data Lake to CDM in Data Lake",
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "DataSet_ADLG2_CSV",
+                        "type": "DatasetReference"
+                    },
+                    "name": "DataLakeCSVFact"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "DataSet_ADLG2_CSV",
+                        "type": "DatasetReference"
+                    },
+                    "name": "DataLakeCSVBusinessUnit"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "DataSet_ADLG2_CSV",
+                        "type": "DatasetReference"
+                    },
+                    "name": "DataLakeCSVJournal"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "DataSet_ADLG2_CSV",
+                        "type": "DatasetReference"
+                    },
+                    "name": "DataLakeCSVProject"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "DataSet_ADLG2_CSV",
+                        "type": "DatasetReference"
+                    },
+                    "name": "DataLakeCSVCustomer"
+                }
+            ],
+            "sinks": [
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMInvoice"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMInvoiceLine"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMPartyV2"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMJournal"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMLedgerAccount"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMProject"
+                },
+                {
+                    "linkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "AzureDataLakeStorageDemo",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "SinkDLCDMCustomer"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "DCInvoice"
+                },
+                {
+                    "name": "AggInvoice"
+                },
+                {
+                    "name": "DCInvoiceLine"
+                },
+                {
+                    "name": "DCParty"
+                },
+                {
+                    "name": "DCJournal"
+                },
+                {
+                    "name": "DCLedgerAccount"
+                },
+                {
+                    "name": "AggCustomerId"
+                },
+                {
+                    "name": "DCProject"
+                },
+                {
+                    "name": "DCCustomer"
+                }
+            ],
+            "script": "parameters{\n\tDFPrmCorpusFolderContainer as string ('cdmproservdataintegration'),\n\tDFPrmCorpusFolderFolder as string ('CDM'),\n\tDFPrmRootLocationContainer as string ('cdmproservdataintegration')\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> DataLakeCSVFact\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DataLakeCSVBusinessUnit\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DataLakeCSVJournal\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DataLakeCSVProject\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> DataLakeCSVCustomer\nDataLakeCSVFact derive(InvoiceId = toString(byName('Invoice')),\n\t\tInvoiceToPartyId = toString(byName('BusinessUnitKey')),\n\t\tTotalInvoiceAmount = toString(byName('Amount'))) ~> DCInvoice\nDCInvoice aggregate(groupBy(InvoiceId),\n\tInvoiceToPartyId = max(toInteger(byName('InvoiceToPartyId'))),\n\t\tTotalInvoiceAmount = sum(toDecimal(byName('Amount'), 9, 2))) ~> AggInvoice\nDataLakeCSVFact derive(InvoiceLineNumber = toInteger(byName('LineKey')),\n\t\tInvoiceId = toInteger(byName('Invoice')),\n\t\tInvoiceLineItemNote = toString(byName('LineDescription')),\n\t\tInvoiceLineChargeAmount = toDecimal(byName('Amount'), 9, 2)) ~> DCInvoiceLine\nDataLakeCSVBusinessUnit derive(PartyId = toInteger(byName('BusinessUnitKey')),\n\t\tPartyName = toString(byName('Name'))) ~> DCParty\nDataLakeCSVJournal derive(JournalId = toInteger(byName('JournalKey'))) ~> DCJournal\nDataLakeCSVProject derive(CustomerId = toInteger(byName('CustomerKey'))) ~> DCLedgerAccount\nDCLedgerAccount aggregate(groupBy(CustomerId),\n\tAggCustomerId = max(toInteger(byName('CustomerId')))) ~> AggCustomerId\nDataLakeCSVProject derive(ProjectId = toInteger(byName('ProjectKey')),\n\t\tProjectName = toString(byName('Name'))) ~> DCProject\nDataLakeCSVCustomer derive(CustomerId = toInteger(byName('CustomerKey')),\n\t\tCustomerNote = toString(byName('Name'))) ~> DCCustomer\nAggInvoice sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tInvoiceId as integer,\n\t\tCustomerAccountId as integer,\n\t\tInvoiceDate as date,\n\t\tInvoiceToName as string,\n\t\tInvoiceToLocationId as integer,\n\t\tInvoiceToTelephoneNumber as decimal(18,2),\n\t\tInvoiceToFaxNumber as decimal(18,2),\n\t\tInvoiceToEmailAddress as string,\n\t\tInvoiceNote as string,\n\t\tTotalInvoiceProductAmount as decimal(18,2),\n\t\tTotalInvoiceChargesAmount as decimal(18,2),\n\t\tTotalInvoiceAdjustmentsAmount as decimal(18,2),\n\t\tTotalInvoiceTaxesAmount as decimal(18,2),\n\t\tTotalInvoiceAmount as decimal(18,2),\n\t\tOrderId as integer,\n\t\tInvoiceModeId as integer,\n\t\tIsoCurrencyCode as string,\n\t\tInvoiceStatusId as integer,\n\t\tIsoLanguageId as integer,\n\t\tInvoiceToPartyId as integer\n\t),\n\tentity: 'Invoice.cdm.json/Invoice',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Invoice',\n\tfolderPath: 'Data/Invoice',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tInvoiceId,\n\t\tInvoiceToPartyId,\n\t\tTotalInvoiceAmount\n\t)) ~> SinkDLCDMInvoice\nDCInvoiceLine sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tInvoiceLineNumber as integer,\n\t\tQuantity as decimal(18,2),\n\t\tUnitPriceAmount as decimal(18,2),\n\t\tSalesPriceAmount as decimal(18,2),\n\t\tInvoiceLineItemNote as string,\n\t\tProductId as integer,\n\t\tItemSku as string,\n\t\tTotalProductInvoiceAmount as decimal(18,2),\n\t\tChargeId as integer,\n\t\tInvoiceLineChargeAmount as decimal(18,2),\n\t\tInvoiceLineAdjustmentsAmount as decimal(18,2),\n\t\tOrderId as integer,\n\t\tOrderLineNumber as integer,\n\t\tIsoCurrencyCode as string,\n\t\tInvoiceLineTypeId as integer,\n\t\tInvoiceId as integer\n\t),\n\tentity: 'InvoiceLine.cdm.json/InvoiceLine',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'InvoiceLine',\n\tfolderPath: 'Data/InvoiceLine',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tInvoiceLineNumber,\n\t\tInvoiceLineItemNote,\n\t\tInvoiceLineChargeAmount,\n\t\tInvoiceId\n\t)) ~> SinkDLCDMInvoiceLine\nDCParty sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tPartyId as integer,\n\t\tPartyName as string,\n\t\tPartyTypeId as integer,\n\t\tGlobalLocationNumber as decimal(18,2)\n\t),\n\tentity: 'Party.cdm.json/Party',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Party',\n\tfolderPath: 'Data/Party',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tPartyId,\n\t\tPartyName\n\t)) ~> SinkDLCDMPartyV2\nDCJournal sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tJournalId as integer,\n\t\tJournalName as string,\n\t\tLegalEntityId as integer,\n\t\tSpecialJournalIndicator as boolean,\n\t\tJournalTypeId as integer\n\t),\n\tentity: 'Journal.cdm.json/Journal',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Journal',\n\tfolderPath: 'Data/Journal',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tJournalId\n\t)) ~> SinkDLCDMJournal\nAggCustomerId sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tLedgerId as integer,\n\t\tLedgerAccountNumber as string,\n\t\tLedgerAccountName as string,\n\t\tLedgerAccountCreatedTimestamp as timestamp,\n\t\tLedgerAccountOpeningBalanceDate as date,\n\t\tOpeningBalanceAmount as decimal(18,2),\n\t\tSubaccountIndicator as boolean,\n\t\tCustomerAccountId as integer,\n\t\tAccountsPayableLegalEntityId as integer,\n\t\tResponsibilityCenterId as integer,\n\t\tLedgerAccountCategoryId as integer,\n\t\tLedgerAccountTypeId as integer,\n\t\tIsoCurrencyCode as string,\n\t\tCustomerId as integer,\n\t\tProjectId as integer\n\t),\n\tentity: 'LedgerAccount.cdm.json/LedgerAccount',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'LedgerAccount',\n\tfolderPath: 'Data/LedgerAccount',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tCustomerId\n\t)) ~> SinkDLCDMLedgerAccount\nDCProject sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tProjectId as integer,\n\t\tProjectName as string,\n\t\tProjectDescription as string,\n\t\tProjectTypeId as integer,\n\t\tProjectPlannedStartTimestamp as timestamp,\n\t\tProjectPlannedEndTimestamp as timestamp,\n\t\tProjectEarliestStartTimestamp as timestamp,\n\t\tProjectEarliestEndTimestamp as timestamp,\n\t\tProjectLatestStartTimestamp as timestamp,\n\t\tProjectLatestEndTimestamp as timestamp,\n\t\tProjectClosingTimestamp as timestamp,\n\t\tProjectRiskAssessmentStatement as string,\n\t\tProjectWorkStatement as string,\n\t\tProjectCharterStatement as string,\n\t\tBusinessCaseStatement as string,\n\t\tLocationId as integer,\n\t\tProjectGlAccountNumber as string,\n\t\tResponsibilityCenterId as integer\n\t),\n\tentity: 'Project.cdm.json/Project',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Project',\n\tfolderPath: 'Data/Project',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tProjectId,\n\t\tProjectName\n\t)) ~> SinkDLCDMProject\nDCCustomer sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tCustomerId as integer,\n\t\tCustomerEstablishedDate as date,\n\t\tCustomerTypeId as integer,\n\t\tResponsibilityCenterId as integer,\n\t\tCustomerNote as string,\n\t\tGlobalLocationNumber as decimal(18,2),\n\t\tLedgerId as integer,\n\t\tLedgerAccountNumber as string,\n\t\tPartyId as integer\n\t),\n\tentity: 'Customer.cdm.json/Customer',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'Customer',\n\tfolderPath: 'Data/Customer',\n\tfileSystem: ($DFPrmRootLocationContainer),\n\tcolumnDelimiter: ',',\n\tcolumnNamesAsHeader: true,\n\tcorpusPath: ($DFPrmCorpusFolderFolder),\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: ($DFPrmCorpusFolderContainer),\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tCustomerId,\n\t\tCustomerNote\n\t)) ~> SinkDLCDMCustomer"
+        }
+    }
+}

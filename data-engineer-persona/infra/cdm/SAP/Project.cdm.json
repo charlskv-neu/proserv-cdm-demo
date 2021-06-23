@@ -1,0 +1,168 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "Project",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "ProjectId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Project ID",
+          "description": "The unique identifier of a Project."
+        },
+        {
+          "name": "ProjectName",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project Name",
+          "description": "The name of a Project.",
+          "maximumLength": 128
+        },
+        {
+          "name": "ProjectDescription",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project Description",
+          "description": "The description of a Project.",
+          "maximumLength": 512
+        },
+        {
+          "name": "ProjectTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Project Type ID",
+          "description": "The unique identifier of a Project Type."
+        },
+        {
+          "name": "ProjectPlannedStartTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Planned Start Timestamp",
+          "description": "The planned start timestamp of a Project."
+        },
+        {
+          "name": "ProjectPlannedEndTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Planned End Timestamp",
+          "description": "The planned end timestamp of a Project."
+        },
+        {
+          "name": "ProjectEarliestStartTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Earliest Start Timestamp",
+          "description": "The earliest start timestamp of a Project."
+        },
+        {
+          "name": "ProjectEarliestEndTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Earliest End Timestamp",
+          "description": "The earliest end timestamp of a Project."
+        },
+        {
+          "name": "ProjectLatestStartTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Latest Start Timestamp",
+          "description": "The latest start timestamp of a Project."
+        },
+        {
+          "name": "ProjectLatestEndTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Latest End Timestamp",
+          "description": "The latest end timestamp of a Project."
+        },
+        {
+          "name": "ProjectClosingTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Project Closing Timestamp",
+          "description": "The closing timestamp of the project."
+        },
+        {
+          "name": "ProjectRiskAssessmentStatement",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project Risk Assessment Statement",
+          "description": "A statement in which planners identify potential risks and describe them, usually in terms of their symptoms, causes, probability of occurrence and potential impact.",
+          "maximumLength": 2048
+        },
+        {
+          "name": "ProjectWorkStatement",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project Work Statement",
+          "description": "A description of the scope of a project centered on the major deliverables and constraints.",
+          "maximumLength": 2048
+        },
+        {
+          "name": "ProjectCharterStatement",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project Charter Statement",
+          "description": "A document that describes the project at a high level of detail and is used to authorize the project management to begin work.",
+          "maximumLength": 2048
+        },
+        {
+          "name": "BusinessCaseStatement",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Business Case Statement",
+          "description": "The information that describes the justification for the project. The project is justified if the expected benefits outweigh estimated costs and risks. The business case is often complex and may require financial analysis, technical analysis, organization impact analysis and a feasibility study.",
+          "maximumLength": 2048
+        },
+        {
+          "name": "LocationId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Location ID",
+          "description": "The unique identifier of a Location."
+        },
+        {
+          "name": "ProjectGlAccountNumber",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Project GL Account Number",
+          "description": "The GL Account Number assigned to a Project.",
+          "maximumLength": 16
+        },
+        {
+          "name": "ResponsibilityCenterId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Responsibility Center ID",
+          "description": "The unique identifier of a Responsibility Center."
+        }
+      ],
+      "displayName": "Project",
+      "description": "A project is a temporary activity with a starting date, specific goals and conditions, defined responsibilities, a budget, a planning, a fixed end date and multiple parties involved."
+    }
+  ]
+}
