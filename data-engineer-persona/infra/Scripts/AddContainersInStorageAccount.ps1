@@ -178,12 +178,6 @@ Create-FolderInContainer $containerName $AmericasADLSName $folderName
 $folderName = "taxidata/nyctaxidata/source/"
 Create-FolderInContainer $containerName $AmericasADLSName $folderName
 
-$folderName = "taxidata/nyctaxidata/source/nyc-green/"
-Create-FolderInContainer $containerName $AmericasADLSName $folderName
-
-$folderName = "taxidata/nyctaxidata/source/nyc-yellow/"
-Create-FolderInContainer $containerName $AmericasADLSName $folderName
-
 $folderName = "taxidata/nyctaxidata/staging/"
 Create-FolderInContainer $containerName $AmericasADLSName $folderName
 
