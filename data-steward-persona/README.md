@@ -1,10 +1,11 @@
-# *ProServ Demo Handbook*
+# *ProServ Data Steward Demo Handbook*
 
 
 ## *Prerequisites* : 
  - Azure Subscription with a Resource Group to deploy
  - User must have owner access to the resource group
  - [Download and install](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli) the current release of the Azure CLI to run the deployment script. After the installation is complete, you will need to close and reopen any active Windows Command Prompt or PowerShell windows to use the Azure CLI.
+ - Data Engineer demo must be already executed on this resource group and user should have necessary permission on source datasets
 
 
 ## Collect data needed to run the scripts
@@ -21,6 +22,7 @@ Before you get started, copy and paste below variables in a text editor for late
 |SyanpseDefaultADLSName | Default ADLS Storage account name to be linked with Synapse. | Azure Portal -> Copy Default ADLS Storage account name |
 |AmericasADLSName | ADLS Storage account name in Americas region to be used for Third Party data. | Azure Portal -> Copy ADLS Storage account name in Americas region |
 |ApacADLSName | ADLS Storage account name in APAC region to be used for Contoso data. | Azure Portal -> Copy ADLS Storage account name in APAC region |
+|PurviewAccountName | Azure Purview Account Name |
 
 ## Prepare starter kit and run the client-side setup scripts
 
@@ -47,5 +49,11 @@ Before you get started, copy and paste below variables in a text editor for late
 	- Complete the Azure login when prompted
 	
 5. Once the deployment is complete, verify the purview account is created. Also, confirm the access controls are set correctly.
+
+6. Below are the three steps performed by this script post which the source registration and scan has to be done manually.
+
+	- Provision the purview account
+	- Purview account is given Storage Blob Data Reader role at all 3 ADLS accounts
+	- Grant Purview API access to Synapse Managed Identity and logged in user
 
 ***
