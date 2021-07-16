@@ -1,0 +1,370 @@
+{
+    "name": "PipelineDataverseToCDM",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data1",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CommonDataServiceForAppsSource"
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".csv"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "crf99_accountname",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "AccountName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_accounttype",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "AccountType",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_creditamount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "CreditAmount",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_currency",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "Currency",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_debitamount",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "DebitAmount",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_description",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "Description",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_exchangerate",
+                                    "type": "Double"
+                                },
+                                "sink": {
+                                    "name": "ExchangeRate",
+                                    "type": "Double"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_invoice",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "Invoice",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_isposted",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "IsPosted",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_journalbatchnumber",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "JournalBatchNumber",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_journalname",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "JournalName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_linenumber",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "LineNumber",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_offsetaccountname",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "OffsetAccountName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_offsetaccounttype",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "OffsetAccountType",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_paymentdate",
+                                    "type": "DateTime"
+                                },
+                                "sink": {
+                                    "name": "PaymentDate",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_paymentmethod",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "PaymentMethod",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_posteddate",
+                                    "type": "DateTime"
+                                },
+                                "sink": {
+                                    "name": "PostedDate",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "crf99_postinglayer",
+                                    "type": "String"
+                                },
+                                "sink": {
+                                    "name": "PostingLayer",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "CDSDataverse",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "DataverseStaging",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "StagingContainer": {
+                                "value": "@pipeline().parameters.StagingContainer",
+                                "type": "Expression"
+                            },
+                            "StagingDirectory": {
+                                "value": "@pipeline().parameters.StagingDirectory",
+                                "type": "Expression"
+                            },
+                            "StagingFileName": {
+                                "value": "@pipeline().parameters.StagingFileName",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Data flow1",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [
+                    {
+                        "activity": "Copy data1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "1.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "glDataversetoCDMDF",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "CorpusContainer": {
+                                "value": "'@{pipeline().parameters.CorpusContainer}'",
+                                "type": "Expression"
+                            },
+                            "CorpusFolderPath": {
+                                "value": "'@{pipeline().parameters.CorpusFolderPath}'",
+                                "type": "Expression"
+                            },
+                            "Entity": {
+                                "value": "'@{pipeline().parameters.Entity}'",
+                                "type": "Expression"
+                            },
+                            "RootContainer": {
+                                "value": "'@{pipeline().parameters.RootContainer}'",
+                                "type": "Expression"
+                            },
+                            "RootFolderPath": {
+                                "value": "'@{pipeline().parameters.RootFolderPath}'",
+                                "type": "Expression"
+                            },
+                            "EntityPath": {
+                                "value": "'@{pipeline().parameters.EntityPath}'",
+                                "type": "Expression"
+                            },
+                            "ManifestName": {
+                                "value": "'@{pipeline().parameters.ManifestName}'",
+                                "type": "Expression"
+                            }
+                        },
+                        "datasetParameters": {
+                            "source1": {
+                                "StagingContainer": {
+                                    "value": "@pipeline().parameters.StagingContainer",
+                                    "type": "Expression"
+                                },
+                                "StagingDirectory": {
+                                    "value": "@pipeline().parameters.StagingDirectory",
+                                    "type": "Expression"
+                                },
+                                "StagingFileName": {
+                                    "value": "@pipeline().parameters.StagingFileName",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "None",
+                    "cacheSinks": {
+                        "firstRowOnly": true
+                    }
+                }
+            }
+        ],
+        "parameters": {
+            "StagingContainer": {
+                "type": "string",
+                "defaultValue": "staging"
+            },
+            "StagingDirectory": {
+                "type": "string",
+                "defaultValue": "dataverse"
+            },
+            "StagingFileName": {
+                "type": "string",
+                "defaultValue": "GeneralJournal_Dataverse.csv"
+            },
+            "CorpusContainer": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "CorpusFolderPath": {
+                "type": "string",
+                "defaultValue": "cdm"
+            },
+            "Entity": {
+                "type": "string",
+                "defaultValue": "GeneralJournal.cdm.json/GeneralJournal"
+            },
+            "RootContainer": {
+                "type": "string",
+                "defaultValue": "models"
+            },
+            "RootFolderPath": {
+                "type": "string",
+                "defaultValue": "data"
+            },
+            "EntityPath": {
+                "type": "string"
+            },
+            "ManifestName": {
+                "type": "string",
+                "defaultValue": "GeneralLedger"
+            }
+        },
+        "annotations": []
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "name": "DataverseStaging",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "ADLS_ProServ_APAC",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "StagingContainer": {
+                "type": "string"
+            },
+            "StagingDirectory": {
+                "type": "string"
+            },
+            "StagingFileName": {
+                "type": "string"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().StagingFileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().StagingDirectory",
+                    "type": "Expression"
+                },
+                "fileSystem": {
+                    "value": "@dataset().StagingContainer",
+                    "type": "Expression"
+                }
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": []
+    }
+}

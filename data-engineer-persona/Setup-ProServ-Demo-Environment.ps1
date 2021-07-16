@@ -450,6 +450,10 @@ $definitionFilePath = $artifactsBasePath + "linkedService/SQLOnDemand.json";
 New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
 .\infra\Scripts\ReplaceTextInSource.ps1 -FilePath $definitionFilePath -ParameterValue "<SynapseWorkspaceName>" -ParameterName "$SynapseWorkspaceName"
 
+$linkedServiceName = "Dataverse";
+$definitionFilePath = $artifactsBasePath + "linkedService/Dataverse.json";
+New-SynapseLinkedService $SynapseWorkspaceName $linkedServiceName $definitionFilePath;
+
 $dataSetName = "DynamicsGeneralJournalExcel";
 $definitionFilePath = $artifactsBasePath + "dataset/DynamicsGeneralJournalExcel.json";
 New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
@@ -474,6 +478,14 @@ $dataSetName = "DataSet_ADLG2_XLS";
 $definitionFilePath = $artifactsBasePath + "dataset/DataSet_ADLG2_XLS.json";
 New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
 
+$dataSetName = "CDSDataverse";
+$definitionFilePath = $artifactsBasePath + "dataset/CDSDataverse.json";
+New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
+
+$dataSetName = "DataverseStaging";
+$definitionFilePath = $artifactsBasePath + "dataset/DataverseStaging.json";
+New-SynapseDataSet $SynapseWorkspaceName $dataSetName $definitionFilePath;
+
 $dataFlowName = "DynamicsGL_CDM";
 $definitionFilePath = $artifactsBasePath + "dataflow/DynamicsGL_CDM.json";
 New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
@@ -488,6 +500,10 @@ New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
 $dataFlowName = "DF_ProServ_DataLakeSAPCSV_to_DataLakeCDM";
 $definitionFilePath = $artifactsBasePath + "dataflow/DF_ProServ_DataLakeSAPCSV_to_DataLakeCDM.json";
+New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
+
+$dataFlowName = "glDataversetoCDMDF";
+$definitionFilePath = $artifactsBasePath + "dataflow/glDataversetoCDMDF.json";
 New-SynapseDataFlow $SynapseWorkspaceName $dataFlowName $definitionFilePath;
 
 $pipelineName = "GeneralLedger_CDM_Small";
@@ -542,6 +558,9 @@ $pipelineName = "ProServDataLakeSAPCSVToDataLakeCDM";
 $definitionFilePath = $artifactsBasePath + "pipeline/ProServDataLakeSAPCSVToDataLakeCDM.json";
 New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
+$pipelineName = "PipelineDataverseToCDM";
+$definitionFilePath = $artifactsBasePath + "pipeline/PipelineDataverseToCDM.json";
+New-SynapsePipeline $SynapseWorkspaceName $pipelineName $definitionFilePath;
 
 ## Create database objects in sql pool
 $sqlScriptsBasePath = "./SqlPoolObjects/";
