@@ -1,0 +1,32 @@
+{
+    "name": "glDataversetoCDMDF",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "DataverseStaging",
+                        "type": "DatasetReference"
+                    },
+                    "name": "source1"
+                }
+            ],
+            "sinks": [
+                {
+                    "linkedService": {
+                        "referenceName": "ADLS_ProServ_APAC",
+                        "type": "LinkedServiceReference"
+                    },
+                    "schemaLinkedService": {
+                        "referenceName": "ADLS_ProServ_APAC",
+                        "type": "LinkedServiceReference"
+                    },
+                    "name": "sink1"
+                }
+            ],
+            "transformations": [],
+            "script": "parameters{\n\tCorpusContainer as string,\n\tCorpusFolderPath as string,\n\tEntity as string,\n\tRootContainer as string,\n\tRootFolderPath as string,\n\tEntityPath as string,\n\tManifestName as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: false,\n\tvalidateSchema: false,\n\tinput(\n\t\tJournalName as string,\n\t\tJournalBatchNumber as string,\n\t\tLineNumber as string,\n\t\tAccountName as string,\n\t\tAccountType as string,\n\t\tCreditAmount as string,\n\t\tDebitAmount as string,\n\t\tCurrency as string,\n\t\tExchangeRate as string,\n\t\tDescription as string,\n\t\tInvoice as string,\n\t\tIsPosted as string,\n\t\tPostedDate as string,\n\t\tPostingLayer as string,\n\t\tOffsetAccountName as string,\n\t\tOffsetAccountType as string,\n\t\tPaymentMethod as string,\n\t\tPaymentDate as string\n\t),\n\tentity: 'GeneralJournal.cdm.json/GeneralJournal',\n\tformat: 'cdm',\n\tmanifestType: 'manifest',\n\tmanifestName: 'GeneralLedger',\n\tfolderPath: 'data',\n\tfileSystem: 'models',\n\tcolumnNamesAsHeader: true,\n\tcolumnDelimiter: ',',\n\tquoteChar: '\\\"',\n\tescapeChar: '\\\\',\n\tcorpusPath: 'cdm',\n\tcorpusStore: 'adlsgen2',\n\tadlsgen2_fileSystem: 'models',\n\ttruncate: true,\n\tumask: 0022,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+        }
+    }
+}

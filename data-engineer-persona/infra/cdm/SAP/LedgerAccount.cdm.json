@@ -1,0 +1,195 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "LedgerAccount",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "LedgerId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Ledger ID",
+          "description": "The unique identifier of a Ledger."
+        },
+        {
+          "name": "LedgerAccountNumber",
+          "purpose": "identifiedBy",
+          "dataType": "string",
+          "displayName": "Ledger Account Number",
+          "description": "The unique identifier of a Ledger Account.",
+          "maximumLength": 16
+        },
+        {
+          "name": "LedgerAccountName",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Ledger Account Name",
+          "description": "The name of the ledger account.",
+          "maximumLength": 128
+        },
+        {
+          "name": "LedgerAccountCreatedTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Ledger Account Created Timestamp",
+          "description": "The timestamp that the ledger account was created or established."
+        },
+        {
+          "name": "LedgerAccountOpeningBalanceDate",
+          "purpose": "hasA",
+          "dataType": "date",
+          "isNullable": true,
+          "displayName": "Ledger Account Opening Balance Date",
+          "description": "The date of the ledger account opening balance."
+        },
+        {
+          "name": "OpeningBalanceAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Opening Balance Amount",
+          "description": "The beginning balance amount of the associated account.\n\nIn order for an account to exist it must have a balance that represents the net worth of the account at that time.",
+          "maximumLength": 13
+        },
+        {
+          "name": "SubaccountIndicator",
+          "purpose": "hasA",
+          "dataType": "boolean",
+          "isNullable": true,
+          "displayName": "Subaccount Indicator",
+          "description": "Indicates that the account is a subaccount of another account."
+        },
+        {
+          "name": "CustomerAccountId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Customer Account ID",
+          "description": "The unique identifier of a Customer Account."
+        },
+        {
+          "name": "AccountsPayableLegalEntityId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Accounts Payable Legal Entity ID",
+          "description": "The unique identifier of a Legal Entity.\n\nIn this case it is the business, organization or legal entity whose books are being recorded and financial statements presented."
+        },
+        {
+          "name": "ResponsibilityCenterId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Responsibility Center ID",
+          "description": "The unique identifier of a Responsibility Center."
+        },
+        {
+          "name": "LedgerAccountCategoryId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Ledger Account Category ID",
+          "description": "The unique identifier of an Account Category."
+        },
+        {
+          "name": "LedgerAccountTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Ledger Account Type ID",
+          "description": "The unique identifier of an Account Type."
+        },
+        {
+          "name": "IsoCurrencyCode",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "ISO Currency Code",
+          "description": "The ISO 4217 currency code.",
+          "maximumLength": 3
+        },
+        {
+          "entity": {
+            "entityReference": "Customer",
+            "appliedTraits": [
+              {
+                "traitReference": "is.identifiedBy",
+                "arguments": [
+                  "Customer/(resolvedAttributes)/CustomerId"
+                ]
+              }
+            ]
+          },
+          "name": "CustomerId",
+          "resolutionGuidance": {
+            "renameFormat": "{m}",
+            "entityByReference": {
+              "allowReference": true,
+              "foreignKeyAttribute": {
+                "name": "CustomerId",
+                "purpose": "hasA",
+                "dataType": "integer",
+                "isNullable": true,
+                "displayName": "Customer ID",
+                "description": "The unique identifier of a Customer."
+              }
+            }
+          }
+        },
+        {
+          "entity": {
+            "entityReference": "Project",
+            "appliedTraits": [
+              {
+                "traitReference": "is.identifiedBy",
+                "arguments": [
+                  "Project/(resolvedAttributes)/ProjectId"
+                ]
+              }
+            ]
+          },
+          "name": "ProjectId",
+          "resolutionGuidance": {
+            "renameFormat": "{m}",
+            "entityByReference": {
+              "allowReference": true,
+              "foreignKeyAttribute": {
+                "name": "ProjectId",
+                "purpose": "hasA",
+                "dataType": "integer",
+                "isNullable": true,
+                "displayName": "Project ID",
+                "description": "The unique identifier of a Project."
+              }
+            }
+          }
+        }
+      ],
+      "displayName": "Ledger Account (Chart Of Accounts - Account)",
+      "description": "A Ledger Account is a separate record that is maintained for each category of asset, liability, permanent and temporary capital record.\n\nIt is an individual accounting record of increases and decreases in specific asset, liability, and stockholders' equity items.\n\nThe purpose of the account is to record the information about each business transaction.\n\nNote:\nThere can be more than one Chart of Accounts."
+    }
+  ]
+}

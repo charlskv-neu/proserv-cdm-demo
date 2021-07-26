@@ -1,0 +1,92 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "JournalEntry",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "JournalEntryId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Journal Entry ID",
+          "description": "The unique identifier of a Journal Entry."
+        },
+        {
+          "name": "JournalTimestamp",
+          "purpose": "hasA",
+          "dataType": "dateTime",
+          "isNullable": true,
+          "displayName": "Journal Timestamp",
+          "description": "The timestamp of the journal entry."
+        },
+        {
+          "name": "JournalEntryDescription",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Journal Entry Description",
+          "description": "A description of the journal entry/transaction.",
+          "maximumLength": 512
+        },
+        {
+          "name": "TransactionId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "displayName": "Transaction ID",
+          "description": "The unique identifier of a Transaction."
+        },
+        {
+          "name": "JournalAdjustingEntryTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Journal Adjusting Entry Type ID",
+          "description": "The unique identifier of a journal adjusting entry type."
+        },
+        {
+          "name": "ResponsibilityCenterId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Responsibility Center ID",
+          "description": "The unique identifier of a Responsibility Center."
+        },
+        {
+          "entity": {
+            "entityReference": "Journal",
+            "appliedTraits": [
+              {
+                "traitReference": "is.identifiedBy",
+                "arguments": [
+                  "Journal/(resolvedAttributes)/JournalId"
+                ]
+              }
+            ]
+          },
+          "name": "JournalId",
+          "resolutionGuidance": {
+            "renameFormat": "{m}",
+            "entityByReference": {
+              "allowReference": true,
+              "foreignKeyAttribute": {
+                "name": "JournalId",
+                "purpose": "identifiedBy",
+                "dataType": "integer",
+                "displayName": "Journal ID",
+                "description": "The unique identifier of a Journal."
+              }
+            }
+          }
+        }
+      ],
+      "displayName": "Journal Entry",
+      "description": "The entry of a transaction into the journal or book of original entry.\n\nAll transactions are first recorded into a journal in chronological order.\n\nThis represents an adequate explanation of what has occurred before the transaction is posted to accounts.\n\nNote:\nThe transaction may be entered into one or more journals such as a general journal and a specialized journal."
+    }
+  ]
+}

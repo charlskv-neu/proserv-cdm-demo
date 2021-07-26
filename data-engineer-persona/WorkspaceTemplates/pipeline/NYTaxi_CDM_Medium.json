@@ -1,0 +1,102 @@
+{
+    "name": "NYTaxi_CDM_Medium",
+    "properties": {
+        "activities": [
+            {
+                "name": "NYTaxitoCDM_Mapping",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "7.00:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "NYTaxiDF_CDM",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "CorpusContainer": {
+                                "value": "'@{pipeline().parameters.CorpusContainer}'",
+                                "type": "Expression"
+                            },
+                            "CorpusFolder": {
+                                "value": "'@{pipeline().parameters.CorpusFolder}'",
+                                "type": "Expression"
+                            },
+                            "RootContainer": {
+                                "value": "'@{pipeline().parameters.RootContainer}'",
+                                "type": "Expression"
+                            },
+                            "RootFolder": {
+                                "value": "'@{pipeline().parameters.RootFolder}'",
+                                "type": "Expression"
+                            },
+                            "Entity": {
+                                "value": "'@{pipeline().parameters.Entity}'",
+                                "type": "Expression"
+                            }
+                        },
+                        "datasetParameters": {
+                            "source1": {
+                                "FileSystem": {
+                                    "value": "@pipeline().parameters.FileSystem",
+                                    "type": "Expression"
+                                },
+                                "FileDirectory": {
+                                    "value": "@pipeline().parameters.FileDirectory",
+                                    "type": "Expression"
+                                }
+                            }
+                        }
+                    },
+                    "integrationRuntime": {
+                        "referenceName": "IntegrationRuntimePerformance",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "traceLevel": "None",
+                    "runConcurrently": true,
+                    "cacheSinks": {
+                        "firstRowOnly": true
+                    }
+                }
+            }
+        ],
+        "parameters": {
+            "FileSystem": {
+                "type": "string",
+                "defaultValue": "thirdpartydata"
+            },
+            "FileDirectory": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaxidata/source/nyc-green"
+            },
+            "CorpusContainer": {
+                "type": "string",
+                "defaultValue": "thirdpartydata"
+            },
+            "CorpusFolder": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaxidata/config/cdm-model"
+            },
+            "RootContainer": {
+                "type": "string",
+                "defaultValue": "thirdpartydata"
+            },
+            "RootFolder": {
+                "type": "string",
+                "defaultValue": "taxidata/nyctaxidata/output/cdm/nyctaximediumoutput"
+            },
+            "Entity": {
+                "type": "string",
+                "defaultValue": "nyctaxidata.cdm.json/nyctaxidata"
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2021-06-09T19:15:24Z"
+    },
+    "type": "Microsoft.Synapse/workspaces/pipelines"
+}

@@ -1,0 +1,32 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "/foundations.cdm.json"
+    },
+    {
+      "corpusPath": "Customer.cdm.json"
+    },
+    {
+      "corpusPath": "Invoice.cdm.json"
+    },
+    {
+      "corpusPath": "InvoiceLine.cdm.json"
+    },
+    {
+      "corpusPath": "Journal.cdm.json"
+    },
+    {
+      "corpusPath": "JournalEntry.cdm.json"
+    },
+    {
+      "corpusPath": "LedgerAccount.cdm.json"
+    },
+    {
+      "corpusPath": "Party.cdm.json"
+    },
+    {
+      "corpusPath": "Project.cdm.json"
+    }
+  ]
+}

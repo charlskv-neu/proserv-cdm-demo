@@ -1,0 +1,52 @@
+{
+    "name": "DataSet_ADLG2_XLS",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureDataLakeStorageDemo",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "DSprm_Container": {
+                "type": "string",
+                "defaultValue": "cdmproservdataintegration"
+            },
+            "DSprm_Folder": {
+                "type": "string",
+                "defaultValue": "RAW/Dynamics"
+            },
+            "DSprm_FileName": {
+                "type": "string",
+                "defaultValue": "Projects.xlsx"
+            },
+            "DSprm_SheetName": {
+                "type": "string",
+                "defaultValue": "Projects"
+            }
+        },
+        "annotations": [],
+        "type": "Excel",
+        "typeProperties": {
+            "sheetName": {
+                "value": "@dataset().DSprm_SheetName",
+                "type": "Expression"
+            },
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().DSprm_FileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().DSprm_Folder",
+                    "type": "Expression"
+                },
+                "fileSystem": {
+                    "value": "@dataset().DSprm_Container",
+                    "type": "Expression"
+                }
+            },
+            "firstRowAsHeader": true
+        },
+        "schema": []
+    }
+}

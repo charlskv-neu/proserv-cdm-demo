@@ -1,0 +1,263 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "InvoiceLine",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "InvoiceLineNumber",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Invoice Line Number",
+          "description": "The unique identifier of an Invoice Line Item."
+        },
+        {
+          "name": "Quantity",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Quantity",
+          "description": "The quantity of Products to be invoiced by the invoice line item.",
+          "maximumLength": 13
+        },
+        {
+          "name": "UnitPriceAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Unit Price Amount",
+          "description": "The list unit price of the invoiced line item products.",
+          "maximumLength": 13
+        },
+        {
+          "name": "SalesPriceAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Sales Price Amount",
+          "description": "The actual price invoice for the Product(s), which may differ from the list price.",
+          "maximumLength": 13
+        },
+        {
+          "name": "InvoiceLineItemNote",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Invoice Line Item Note",
+          "description": "A note, comment or additional information regarding the invoice line item.",
+          "maximumLength": 1024
+        },
+        {
+          "name": "ProductId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Product ID",
+          "description": "The unique identifier of a Product."
+        },
+        {
+          "name": "ItemSku",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Item SKU",
+          "description": "The Stock Keeping Unit identifier, which is typically used for inventory-related activities.",
+          "maximumLength": 20
+        },
+        {
+          "name": "TotalProductInvoiceAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Product Invoice Amount",
+          "description": "The total amount of product invoiced on the invoice line.",
+          "maximumLength": 13
+        },
+        {
+          "name": "ChargeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Charge ID",
+          "description": "The unique identifier of a Charge."
+        },
+        {
+          "name": "InvoiceLineChargeAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Invoice Line Charge Amount",
+          "description": "The amount of the charge invoiced on the invoice line.\n\nNote:\nOne or more adjustments may be invoiced on the same invoice line (see INVOICE LINE ADJUSTMENT).     However, each Charge is invoiced as a single invoice line item.",
+          "maximumLength": 13
+        },
+        {
+          "name": "InvoiceLineAdjustmentsAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Invoice Line Adjustments Amount",
+          "description": "The amount of adjustment(s) invoiced on the invoice line.\n\nNote:\nOne or more adjustments may be invoiced on the same invoice line (see INVOICE LINE ADJUSTMENT).     However, each Charge is invoiced as a single invoice line item.",
+          "maximumLength": 13
+        },
+        {
+          "name": "OrderId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Order ID",
+          "description": "The unique number that identifies an Order."
+        },
+        {
+          "name": "OrderLineNumber",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Order Line Number",
+          "description": "The number that identifies the Order Line Item."
+        },
+        {
+          "name": "IsoCurrencyCode",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "ISO Currency Code",
+          "description": "The ISO 4217 currency code.",
+          "maximumLength": 3
+        },
+        {
+          "name": "InvoiceLineTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Invoice Line Type ID",
+          "description": "The unique identifier of an Invoice Item Type."
+        },
+        {
+          "entity": {
+            "entityReference": "Invoice",
+            "appliedTraits": [
+              {
+                "traitReference": "is.identifiedBy",
+                "arguments": [
+                  "Invoice/(resolvedAttributes)/InvoiceId"
+                ]
+              }
+            ]
+          },
+          "name": "InvoiceId",
+          "resolutionGuidance": {
+            "renameFormat": "{m}",
+            "entityByReference": {
+              "allowReference": true,
+              "foreignKeyAttribute": {
+                "name": "InvoiceId",
+                "purpose": "identifiedBy",
+                "dataType": "integer",
+                "displayName": "Invoice ID",
+                "description": "The unique identifier of an Invoice."
+              }
+            }
+          }
+        }
+      ],
+      "displayName": "Invoice Line",
+      "description": "A component of the invoice that details specific products, quantities and values invoiced."
+    }
+  ]
+}

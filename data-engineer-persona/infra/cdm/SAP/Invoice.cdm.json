@@ -1,0 +1,313 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "Invoice",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "InvoiceId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Invoice ID",
+          "description": "The unique identifier of an Invoice."
+        },
+        {
+          "name": "CustomerAccountId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Customer Account ID",
+          "description": "The unique identifier of a Customer Account."
+        },
+        {
+          "name": "InvoiceDate",
+          "purpose": "hasA",
+          "dataType": "date",
+          "isNullable": true,
+          "displayName": "Invoice Date",
+          "description": "The date that the invoice was issued."
+        },
+        {
+          "name": "InvoiceToName",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Invoice-To Name",
+          "description": "The name of the person invoiced.",
+          "maximumLength": 128
+        },
+        {
+          "name": "InvoiceToLocationId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Invoice-To Location ID",
+          "description": "The unique identifier of a Location."
+        },
+        {
+          "name": "InvoiceToTelephoneNumber",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 15
+                },
+                {
+                  "name": "scale",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Invoice-To Telephone Number",
+          "description": "The invoice-to contact telephone number.",
+          "maximumLength": 15
+        },
+        {
+          "name": "InvoiceToFaxNumber",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 15
+                },
+                {
+                  "name": "scale",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Invoice-To Fax Number",
+          "description": "The invoice-to contact fax number.",
+          "maximumLength": 15
+        },
+        {
+          "name": "InvoiceToEmailAddress",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Invoice-To Email Address",
+          "description": "The invoice-to contact email address.",
+          "maximumLength": 256
+        },
+        {
+          "name": "InvoiceNote",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Invoice Note",
+          "description": "A note, comment or additional information regarding the Invoice.",
+          "maximumLength": 1024
+        },
+        {
+          "name": "TotalInvoiceProductAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Invoice Product Amount",
+          "description": "The invoice value amount related equal to the (number of unit products) * (unit sale price)",
+          "maximumLength": 13
+        },
+        {
+          "name": "TotalInvoiceChargesAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Invoice Charges Amount",
+          "description": "The total amount of charges invoiced.",
+          "maximumLength": 13
+        },
+        {
+          "name": "TotalInvoiceAdjustmentsAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Invoice Adjustments Amount",
+          "description": "The total amount of adjustments invoiced.",
+          "maximumLength": 13
+        },
+        {
+          "name": "TotalInvoiceTaxesAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Invoice Taxes Amount",
+          "description": "The total amount of invoiced taxes.",
+          "maximumLength": 13
+        },
+        {
+          "name": "TotalInvoiceAmount",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Total Invoice Amount",
+          "description": "The total amount invoiced.",
+          "maximumLength": 13
+        },
+        {
+          "name": "OrderId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Order ID",
+          "description": "The unique number that identifies an Order."
+        },
+        {
+          "name": "InvoiceModeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Invoice Mode ID",
+          "description": "The unique identifier of the Invoice Mode."
+        },
+        {
+          "name": "IsoCurrencyCode",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "ISO Currency Code",
+          "description": "The ISO 4217 currency code.",
+          "maximumLength": 3
+        },
+        {
+          "name": "InvoiceStatusId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Invoice Status ID",
+          "description": "The unique identifier of a Invoice Status."
+        },
+        {
+          "name": "IsoLanguageId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "ISO Language ID",
+          "description": "The unique identifier of an ISO Language."
+        },
+        {
+          "entity": {
+            "entityReference": "Party",
+            "appliedTraits": [
+              {
+                "traitReference": "is.identifiedBy",
+                "arguments": [
+                  "Party/(resolvedAttributes)/PartyId"
+                ]
+              }
+            ]
+          },
+          "name": "InvoiceToPartyId",
+          "resolutionGuidance": {
+            "renameFormat": "{m}",
+            "entityByReference": {
+              "allowReference": true,
+              "foreignKeyAttribute": {
+                "name": "InvoiceToPartyId",
+                "purpose": "hasA",
+                "dataType": "integer",
+                "isNullable": true,
+                "displayName": "Invoice-To Party ID",
+                "description": "The unique identifier of a Party."
+              }
+            }
+          }
+        }
+      ],
+      "displayName": "Invoice",
+      "description": "A document presented to customers for products delivered or services performed."
+    }
+  ]
+}

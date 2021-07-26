@@ -1,0 +1,66 @@
+{
+  "jsonSchemaSemanticVersion": "1.0.0",
+  "imports": [
+    {
+      "corpusPath": "_allImports.cdm.json"
+    }
+  ],
+  "definitions": [
+    {
+      "entityName": "Party",
+      "extendsEntity": "CdmEntity",
+      "hasAttributes": [
+        {
+          "name": "PartyId",
+          "purpose": "identifiedBy",
+          "dataType": "integer",
+          "displayName": "Party ID",
+          "description": "The unique identifier of a Party."
+        },
+        {
+          "name": "PartyName",
+          "purpose": "hasA",
+          "dataType": "string",
+          "isNullable": true,
+          "displayName": "Party Name",
+          "description": "The name of the Party.",
+          "maximumLength": 128
+        },
+        {
+          "name": "PartyTypeId",
+          "purpose": "hasA",
+          "dataType": "integer",
+          "isNullable": true,
+          "displayName": "Party Type ID",
+          "description": "The unique identifier of a Party Type."
+        },
+        {
+          "name": "GlobalLocationNumber",
+          "purpose": "hasA",
+          "dataType": "decimal",
+          "appliedTraits": [
+            {
+              "traitReference": "is.dataFormat.numeric.shaped",
+              "arguments": [
+                {
+                  "name": "precision",
+                  "value": 13
+                },
+                {
+                  "name": "scale",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "isNullable": true,
+          "displayName": "Global Location Number (GLN)",
+          "description": "The Global Location Number (GLN) is a simple tool used to uniquely identify locations. It can be used to identify physical locations such as a warehouse, legal entities, or a function / department within a legal entity. The GLN is part of the GS1 system of standards.",
+          "maximumLength": 13
+        }
+      ],
+      "displayName": "Party",
+      "description": "A party is an individual, organization, legal entity, social organization or business unit of interest to the business.\n\nParty is a concept that enables individuals, organizations, legal entities, social organization and business units to be related or defined with the context of roles, events and relationships.\n\nThis enables us to 'anchor' disparate instances or implementations of each of the above to a common or singular instance of that individual, organization, legal entity, social organization or business unit.\n\nFor example, a large business has 20 customer masters that are used internally.    PARTY enables the organization to identify and define each customer as a single party and relate (cleanse and synchronize) the multiple instances of customer to a single set of customer information.\n\nIt also allows the business to look at the multiple relationships that exist among parties playing different roles over various periods of time.    \n\nFor example, a business might have a vendor who is also a customer that has employees who are also customers of the business.     A business might have employees who are also customers and whose spouse or family members are also customers.\n\nIn short, party enables the business to examine and record the real-world interactions of individuals, organizations, legal entities, social organizations and business units as they perform those many roles that characterize their activities and relationships to other parties.      Party also provides an 'anchor' upon which to resolve multiple instances or definitions of that party so the business can develop a 'single-view' of the party."
+    }
+  ]
+}
