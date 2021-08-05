@@ -16,7 +16,7 @@ Before you get started, copy and paste below variables in a text editor for late
 |----------------------------- | -------------------------------------------------------------------|------------------------------------------
 |TenantID | Unique identifier (Tenant ID) of the Azure Active Directory instance | Azure portal -> Azure Active Directory -> Copy TenantId |
 |SubscriptionId | Subscription Id where the deployment has to be done | Azure Portal -> Subscriptions ->  Select the subscription Name -> Copy Subscription ID |
-|ResourceGroupName | Resource Group name where the deployment to be made | Azure Portal -> Copy Resource Group Name |
+|ResourceGroupName | Resource Group name where the deployment to be made | Azure Portal -> Copy Resource Group Name. If the provided resource group doesn't exist, it will be created in East US region to proceed with the deployment|
 |SynapseWorkspaceName |	Synapse workspace name | A globally unique name with at most 50 characters long, must contain only lower-case letters, digits and hyphens but can not start or end with '-', and must not contain the string '-ondemand' anywhere in the name.
 |SyanpseDefaultADLSName | Default ADLS Storage account name to be linked with Synapse. | A globally unique name with only lowercase letters and numbers. Name must be between 3 and 24 characters.
 |AmericasADLSName | ADLS Storage account name in Americas region to be used for Third Party data. | A globally unique name with only lowercase letters and numbers. Name must be between 3 and 24 characters.
