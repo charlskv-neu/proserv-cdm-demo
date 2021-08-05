@@ -68,11 +68,17 @@ This template deploys necessary resources to run an Azure Synapse Proof-of-Conce
 	- Integration Runtime
 	  ![Integration Runtime](images/synws-ir.png)
 	- Linked Service
+	  ![Linked Service](images/synws-ls.png)
 	- Integration DataSets
+	  ![Integration DataSets](images/synws-ds.png)
 	- Dataflows
+	  ![Dataflows](images/synws-df.png)
 	- Pipelines
+	  ![Pipelines](images/synws-pl.png)
 	- ADLS Containers
+	  ![Filesystems](images/synws-fs.png)
 - Enable Dataflow debug by selecting IntegrationRuntimePerformance as the IR
+	![Enable Dataflow Debug](images/synws-dfdbg.png)
 - Execute pipelines in below order
 	- GeneralLedger_CDM_Small
 	- glCDMtoOnDemand_Small
@@ -82,6 +88,7 @@ This template deploys necessary resources to run an Azure Synapse Proof-of-Conce
 	- NYTaxiCDMtoSQLPool_Medium
 	- NYTaxiCDMtoSQLPool_Large
 - You may need to change date part in the CDM Folder Path to reflect the actual fodler path in ADLS
+	![Update Pipeline Param - CDM_Folder_Path](images/synws-param.png)
 	- glCDMtoOnDemand_Small
 	- NYTaxiCDMtoSQLonDemand_Medium
 	- NYTaxiCDMtoSQLPool_Medium
