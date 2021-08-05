@@ -65,18 +65,12 @@ This template deploys necessary resources to run an Azure Synapse Proof-of-Conce
 - Click on the newly deployed Synapse workspace.
 - Click on link 'Open' inside the box labelled as 'Open Synapse Studio'.
 - You'll see different synapse artifacts as listed below
-	- Integration Runtime
-	  ![Integration Runtime](images/synws-ir.png)
-	- Linked Service
-	  ![Linked Service](images/synws-ls.png)
-	- Integration DataSets
-	  ![Integration DataSets](images/synws-ds.png)
-	- Dataflows
-	  ![Dataflows](images/synws-df.png)
-	- Pipelines
-	  ![Pipelines](images/synws-pl.png)
-	- ADLS Containers
-	  ![Filesystems](images/synws-fs.png)
+	- ![Integration Runtime](images/synws-ir.png)
+	- ![Linked Service](images/synws-ls.png)
+	- ![Integration DataSets](images/synws-ds.png)
+	- ![Dataflows](images/synws-df.png)
+	- ![Pipelines](images/synws-pl.png)
+	- ![Filesystems](images/synws-fs.png)
 - Enable Dataflow debug by selecting IntegrationRuntimePerformance as the IR
 	![Enable Dataflow Debug](images/synws-dfdbg.png)
 - Execute pipelines in below order
