@@ -4,7 +4,7 @@
 ## *Prerequisites* : 
  - Azure Subscription with a Resource Group to deploy
  - User must have owner access to the resource group
- - [Download and install](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli) the current release of the Azure CLI to run the deployment script. After the installation is complete, you will need to close and reopen any active Windows Command Prompt or PowerShell windows to use the Azure CLI.
+ - [Download and install](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli) the current release of the Azure CLI to run the deployment script. After the installation is complete, you will need to close and reopen any active Windows Command Prompt or PowerShell windows to use the Azure CLI. If CLI is already installed, please update to the latest version.
 
 
 ## Collect data needed to run the scripts
