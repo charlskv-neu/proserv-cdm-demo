@@ -48,6 +48,45 @@ Before you get started, copy and paste below variables in a text editor for late
 	
 5. Once the deployment is complete, verify the synapse and storage account are created. Also, confirm if the Synapse artifacts are deployed too.
 
+## Azure Services being deployed
+   
+This template deploys necessary resources to run an Azure Synapse Proof-of-Concept. Following resources are deployed with this template along with some RBAC role assignments:
+   
+- An Azure Synapse Workspace
+- An Azure Synapse SQL Pool
+- Three Azure Data Lake Storage Gen2 accounts
+- Multiple containers inside the Storage Account to be used by Azure Synapse
+
+## Post Deployment
+- Current Azure user needs to have "Storage Blob Data Contributor" role access to recently created Azure Data Lake Storage Gen2 account to avoid 403 type permission errors.
+- The user who deploys the framework is given the above role by default.
+- After the deployment is complete, go to resource group and you'll see all the resources deployed in the resource group (as in the screenshot below).
+  ![Resources](images/rs-grp.png)
+- Click on the newly deployed Synapse workspace.
+- Click on link 'Open' inside the box labelled as 'Open Synapse Studio'.
+- You'll see different synapse artifacts as listed below
+	- Integration Runtime
+	  ![Integration Runtime](images/synws-ir.png)
+	- Linked Service
+	- Integration DataSets
+	- Dataflows
+	- Pipelines
+	- ADLS Containers
+- Enable Dataflow debug by selecting IntegrationRuntimePerformance as the IR
+- Execute pipelines in below order
+	- GeneralLedger_CDM_Small
+	- glCDMtoOnDemand_Small
+	- NYTaxi_CDM_Medium
+	- NYTaxi_CDM_Large
+	- NYTaxiCDMtoSQLonDemand_Medium
+	- NYTaxiCDMtoSQLPool_Medium
+	- NYTaxiCDMtoSQLPool_Large
+- You may need to change date part in the CDM Folder Path to reflect the actual fodler path in ADLS
+	- glCDMtoOnDemand_Small
+	- NYTaxiCDMtoSQLonDemand_Medium
+	- NYTaxiCDMtoSQLPool_Medium
+	- NYTaxiCDMtoSQLPool_Large
+
 ## Share and Recieve data using Azure Data Share for demo
 
 - Refer this [tutorial](https://docs.microsoft.com/en-us/azure/data-share/share-your-data?tabs=azure-portal) to share and recieve data using Azure Data Share for demo
